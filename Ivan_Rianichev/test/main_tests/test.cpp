@@ -47,3 +47,9 @@ TEST(CalculatorTest, SymbolTest2) {
   int actual = c.Add("cdfgdg,sdfsfd");
   ASSERT_EQ(actual, -1);
 }
+
+TEST(CalculatorTest, MultipleNumbers) {
+  StringCalc c;
+  int actual = c.Add("2,2,2,2,2,2");
+  ASSERT_EQ(actual, 12);
+}
