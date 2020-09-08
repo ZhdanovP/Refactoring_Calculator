@@ -28,3 +28,8 @@ TEST(CalculatorTest, TestName) {
     ASSERT_EQ(actual, 1);
  }
 
+ TEST(CalculatorTest, UnvalidInputStringTest) {
+    StringCalc c;
+    auto actual = c.Add("   ");
+    ASSERT_EQ(actual, -1);
+ }

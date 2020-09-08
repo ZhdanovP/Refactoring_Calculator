@@ -20,10 +20,10 @@ StringCalc::~StringCalc()
 
 int StringCalc::Add(string numbers)
 {
-
+auto constexpr kFailedResult = -1;
 if(numbers.empty())
 {
- return -1;
+ return kFailedResult;
 }
 
      std::string number;
@@ -32,7 +32,13 @@ if(numbers.empty())
 
              while (std::getline(numbersStream, number, ','))
              {
-                    sum += std::stoi(number);
+                 try {
+                      sum += std::stoi(number);
+                 } catch (std::invalid_argument const &ex) {
+                     return kFailedResult;
+
+                 }
+
 
              }
 
