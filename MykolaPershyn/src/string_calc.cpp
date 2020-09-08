@@ -33,8 +33,21 @@ namespace {
     }
     
     
-    string parseSeparator(string s, string &a, int &parsed) {
-        
+    string parseSeparator(string s, string sep, int &parsed) {
+        if(s.size() >= sep.size()) {
+            if(s.substr(0, sep.size()) == sep) {
+                parsed = sep.size();
+                return s.substr(parsed);
+            }
+            else {
+                parsed = 0;
+                return s;
+            }
+        }
+        else {
+            parsed = 0;
+            return s;
+        }
     }
 };
 
@@ -45,19 +58,27 @@ int StringCalc::Add(string numbers)
     int a;
     int b;
     int parsed;
+    string sep = "";
+    
+    auto fail = [&numbers]() {
+        throw(std::invalid_argument(numbers));
+        return -1;
+    };
+    // Parsed
+    
     
     // first number
     string rest = ::parseNum(numbers, a, parsed);
-    if(0 == parsed) return -1; // expecting a number
+    if(0 == parsed) return fail(); // expecting a number
     
     while("" != rest) {
         // separator
-        if(',' != rest[0]) return -1;
-        rest = rest.substr(1);
+        rest = parseSeparator(rest, ",", parsed);
+        if(0 == parsed) return fail();
         
         // second number
         rest = ::parseNum(rest, b, parsed);
-        if(0 == parsed) return -1; // expecting a number
+        if(0 == parsed) return fail();
         a += b;
     }
 
