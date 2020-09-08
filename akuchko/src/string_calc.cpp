@@ -45,36 +45,52 @@ int StringCalc::Add(string numbers)
     while(getline(check1, intermediate, ',')) 
     { 
 		// std::cout << "----" << intermediate << "----" << std::endl;
-        tokens.push_back(intermediate); 
+        // check if previous coma was already added, then skip it		
+
+		tokens.push_back(intermediate); 
     } 
-          
+	
+	// for (auto &i : tokens)
+	// 	std::cout << i <<std::endl;
+
 	if (tokens.size() == 0)
 	{
 		return 0;
 	}		
 	else if (tokens.size() == 1)
 	{
-		int number = std::stoi(tokens[0]);
-		return (number >=0 ? number : -1);		
+		if (tokens[0].empty())
+		{
+			return 0;
+		}
+		else
+		{
+			int number = std::stoi(tokens[0]);
+			return (number >=0 ? number : -1);		
+		}
+		
 	}
 	else
 	{		
 		int result = 0;
 		for (int i=0; i < tokens.size(); ++i)
 		{
-			int current_number = std::stoi(tokens[i]);
-			if (current_number < 0)
+			if (!tokens[i].empty())
 			{
-				return -1;
-			}
-			else if(current_number > 1000)
-			{
-				current_number = 0;
-			}
-			else
-			{
-				result += current_number;
-			}			
+				int current_number = std::stoi(tokens[i]);
+				if (current_number < 0)
+				{
+					return -1;
+				}
+				else if(current_number > 1000)
+				{
+					current_number = 0;
+				}
+				else
+				{
+					result += current_number;
+				}	
+			}					
 		}
 		return result;
 	}	
