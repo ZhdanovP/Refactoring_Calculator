@@ -49,7 +49,7 @@ TEST(CalculatorTest, WrongArgLetters) {
   ASSERT_EQ(actual, -1);
 }
 
-TEST(CalculatorTest, MultiArr) {
+TEST(CalculatorTest, MultiArg) {
   StringCalc c;
   int actual = c.Add("1,2,3,4");
   ASSERT_EQ(actual, 10);
