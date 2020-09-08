@@ -103,4 +103,8 @@ TEST(CalculatorTest, WrongDelimeterThreeArgsTest) {
  EXPECT_THROW(c.Add("1;2%3"), std::invalid_argument);
 }
 
-
+TEST(CalculatorTest, BigNumberTest) {
+	StringCalc c;
+	int actual = c.Add("1001,2");
+	ASSERT_EQ(actual, 2);
+}

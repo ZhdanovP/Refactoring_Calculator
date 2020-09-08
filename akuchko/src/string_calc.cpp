@@ -67,6 +67,10 @@ int StringCalc::Add(string numbers)
 			{
 				return -1;
 			}
+			else if(current_number > 1000)
+			{
+				current_number = 0;
+			}
 			else
 			{
 				result += current_number;
