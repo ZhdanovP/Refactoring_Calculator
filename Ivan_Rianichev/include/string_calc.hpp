@@ -17,6 +17,8 @@ class StringCalc {
   bool parseToOperands(std::string numbers);
 
   std::vector<int> operands;
+  const int minValue;
+  const int maxValue;
 };
 
 #endif

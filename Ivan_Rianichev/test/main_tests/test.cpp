@@ -71,3 +71,9 @@ TEST(CalculatorTest, TestForNewLineDivider2) {
   int actual = c.Add("20\n5,2");
   ASSERT_EQ(actual, 27);
 }
+
+TEST(CalculatorTest, OperandsOver1000Ignored) {
+  StringCalc c;
+  int actual = c.Add("1001,2");
+  ASSERT_EQ(actual, 2);
+}

@@ -5,7 +5,8 @@
 
 using namespace std;
 
-StringCalc::StringCalc() {}
+StringCalc::StringCalc()
+    : minValue(0), maxValue(1000) {}
 
 StringCalc::~StringCalc() {}
 
@@ -15,7 +16,7 @@ int StringCalc::Add(string numbers) {
     result = -1;
   } else {
     for (auto i : operands) {
-      if (i >= 0 && i <= 1000)
+      if (i >= minValue && i <= maxValue)
         result += i;
     }
   }
@@ -24,11 +25,7 @@ int StringCalc::Add(string numbers) {
 
 bool StringCalc::parseToOperands(string numbers) {
   bool result = true;
-  std::replace_if(
-      numbers.begin(),
-      numbers.end(),
-      [](const char& i) { return !std::isdigit(i) && i != '-' && i != '.'; },
-      ',');
+  std::replace(numbers.begin(), numbers.end(), '\n', ',');
   std::stringstream ss(numbers);
   std::string item;
 
@@ -37,6 +34,7 @@ bool StringCalc::parseToOperands(string numbers) {
       operands.push_back(std::stoi(item));
     } else {
       result = false;
+      break;
     }
   }
   return result;
