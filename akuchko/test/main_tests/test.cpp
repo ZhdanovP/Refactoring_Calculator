@@ -49,16 +49,11 @@ TEST(CalculatorTest, BothWrongValueTest) {
 	ASSERT_EQ(actual, -1);
 }
 
-TEST(CalculatorTest, WrongDelimeterValueTest) {
-	StringCalc c;
-	int actual = c.Add("3 6");
-	ASSERT_EQ(actual, -1);
-}
-
 TEST(CalculatorTest, WrongDelimeter2ValueTest) {
 	StringCalc c;
-	int actual = c.Add("3%6");
-	ASSERT_EQ(actual, -1);
+	// int actual = c.Add("3%6");
+	// ASSERT_EQ(actual, -1);
+  EXPECT_THROW(c.Add("3%6"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, ThreeValuesTest) {
@@ -85,14 +80,27 @@ TEST(CalculatorTest, FourZeroValuesTest) {
 	ASSERT_EQ(actual, 0);
 }
 
-TEST(CalculatorTest, NewDelimeterTest) {
-	StringCalc c;
-	int actual = c.Add("1,0\n,2");
-	ASSERT_EQ(actual, 3);
-}
+// TEST(CalculatorTest, NewDelimeterTest) {
+// 	StringCalc c;
+// 	int actual = c.Add("1,0\n,2");
+// 	ASSERT_EQ(actual, 3);
+// }
 
 TEST(CalculatorTest, NewDelimeter2Test) {
 	StringCalc c;
 	int actual = c.Add("1\n2");
 	ASSERT_EQ(actual, 3);
 }
+
+TEST(CalculatorTest, AcceptedDelimetersTest) {
+	StringCalc c;
+	int actual = c.Add("1;2\n3");
+	ASSERT_EQ(actual, 6);
+}
+
+TEST(CalculatorTest, WrongDelimeterThreeArgsTest) {
+	StringCalc c;
+ EXPECT_THROW(c.Add("1;2%3"), std::invalid_argument);
+}
+
+
