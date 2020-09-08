@@ -53,3 +53,24 @@ TEST(CalculatorTest, NegativeNumberAreNotAllowedTest)
     auto       actual = c.Add("2,-2");
     ASSERT_EQ(actual, 2);
 }
+
+TEST(CalculatorTest, ListOfDelimitersTest)
+{
+    StringCalc c;
+    auto       actual = c.Add("//;\n1;2");
+    ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, ListOfServalDelimitersTest)
+{
+    StringCalc c;
+    auto       actual = c.Add("//;*,\n1;2*3*4,5");
+    ASSERT_EQ(actual, 15);
+}
+
+TEST(CalculatorTest, OnlyListOfDelimitersShouldFailTest)
+{
+    StringCalc c;
+    auto       actual = c.Add("//;*,");
+    ASSERT_EQ(actual, -1);
+}
