@@ -2,47 +2,57 @@
 #include <algorithm>
 #include <sstream>
 #include <string>
-
-
+#include <vector>
 
 
 using namespace std;
 
-StringCalc::StringCalc()
+namespace {
+
+std::vector<int>
+getNumbers(string const& inputNumbers)
 {
+    std::istringstream numbersStream(inputNumbers);
+
+    std::vector<int> numbers;
+    std::string      number;
+    while (std::getline(numbersStream, number, ',')) {
+        try {
+            numbers.push_back(std::stoi(number));
+        }
+        catch (std::invalid_argument const& ex) {
+            return {};
+        }
+    }
+    return numbers;
 }
+}  // namespace
+
+StringCalc::StringCalc() {}
 
 
-StringCalc::~StringCalc()
+StringCalc::~StringCalc() {}
+
+
+int
+StringCalc::Add(string numbers)
 {
-}
+    auto constexpr kFailedResult      = -1;
+    auto constexpr kEmptyStringResult = 0;
+    if (numbers.empty()) {
+        return kEmptyStringResult;
+    }
 
 
-int StringCalc::Add(string numbers)
-{
-auto constexpr kFailedResult = -1;
-auto constexpr kEmptyString = 0;
-if(numbers.empty())
-{
- return  kEmptyString;
-}
+    auto numbersVector = getNumbers(numbers);
+    if (numbersVector.empty()) {
+        return kFailedResult;
+    }
 
-     std::string number;
-     std::istringstream numbersStream(numbers);
-            auto sum = 0;
+    auto sum = 0;
+    for (auto const& n : numbersVector) {
+        sum += n;
+    }
 
-             while (std::getline(numbersStream, number, ','))
-             {
-                 try {
-                      sum += std::stoi(number);
-                 } catch (std::invalid_argument const &ex) {
-                     return kFailedResult;
-
-                 }
-
-
-             }
-
-    return sum;//Not Implemented yet
-
+    return sum;
 }
