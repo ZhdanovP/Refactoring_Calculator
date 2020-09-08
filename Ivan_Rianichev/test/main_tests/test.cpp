@@ -59,3 +59,15 @@ TEST(CalculatorTest, FloatNumbersTest) {
   int actual = c.Add("2.5,2.5");
   ASSERT_EQ(actual, 4);
 }
+
+TEST(CalculatorTest, TestForNewLineDivider) {
+  StringCalc c;
+  int actual = c.Add("2\n5");
+  ASSERT_EQ(actual, 7);
+}
+
+TEST(CalculatorTest, TestForNewLineDivider2) {
+  StringCalc c;
+  int actual = c.Add("20\n5,2");
+  ASSERT_EQ(actual, 27);
+}

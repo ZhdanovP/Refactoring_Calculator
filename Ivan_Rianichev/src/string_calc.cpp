@@ -1,6 +1,7 @@
 #include "string_calc.hpp"
 #include <algorithm>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -14,21 +15,28 @@ int StringCalc::Add(string numbers) {
     result = -1;
   } else {
     for (auto i : operands) {
-      result += i;
+      if (i >= 0 && i <= 1000)
+        result += i;
     }
   }
   return result;
 }
 
-bool StringCalc::parseToOperands(const std::string& numbers) {
+bool StringCalc::parseToOperands(string numbers) {
   bool result = true;
+  std::replace_if(
+      numbers.begin(),
+      numbers.end(),
+      [](const char& i) { return !std::isdigit(i) && i != '-' && i != '.'; },
+      ',');
   std::stringstream ss(numbers);
   std::string item;
+
   while (std::getline(ss, item, ',')) {
-    if (item < "0" || item > "9") {
-      result = false;
-    } else {
+    if (item >= "0" && item < "9999") {
       operands.push_back(std::stoi(item));
+    } else {
+      result = false;
     }
   }
   return result;
