@@ -93,3 +93,27 @@ TEST(CalculatorTest, EolAndCommaSeparatorMixed) {
  	int res = c.Add("5\n10,15");
   EXPECT_EQ(res, 30);
 }
+
+TEST(CalculatorTest, CustomSeparators) {
+  StringCalc c;
+ 	int res = c.Add("//;\n5;15");
+  EXPECT_EQ(res, 20);
+}
+
+TEST(CalculatorTest, NotSpecifiedSeparator) {
+  StringCalc c;
+ 	int res = c.Add("5;15");
+  EXPECT_EQ(res, -1);
+}
+
+TEST(CalculatorTest, NotSpecifiedSeparatorButSPecifiedPrefix) {
+  StringCalc c;
+ 	int res = c.Add("//,5;15");
+  EXPECT_EQ(res, -1);
+}
+
+TEST(CalculatorTest, SeparatorListNotTerminated) {
+  StringCalc c;
+ 	int res = c.Add("//;5;15");
+  EXPECT_EQ(res, -1);
+}
