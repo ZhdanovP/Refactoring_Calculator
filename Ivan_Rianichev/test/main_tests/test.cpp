@@ -53,3 +53,9 @@ TEST(CalculatorTest, MultipleNumbers) {
   int actual = c.Add("2,2,2,2,2,2");
   ASSERT_EQ(actual, 12);
 }
+
+TEST(CalculatorTest, FloatNumbersTest) {
+  StringCalc c;
+  int actual = c.Add("2.5,2.5");
+  ASSERT_EQ(actual, 4);
+}
