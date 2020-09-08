@@ -20,7 +20,7 @@ namespace {
         a = 0;
         parsed = 0;
         for(char c : s) {
-            if('0' < c && c < '9')
+            if('0' <= c && c <= '9')
             {
                 ++parsed;
                 a *= 10;
@@ -48,7 +48,6 @@ int StringCalc::Add(string numbers)
         // the string contains just one number
         return a;
     }
-    
     // coma
     if(',' != rest[0]) return -1;
     rest = rest.substr(1);
