@@ -46,6 +46,7 @@ int StringCalc::Add(string numbers)
 		}
 		
 		if(iss.fail() || a < 0) throw invalid_argument{"invalid a"};
+		if (a > 1000) a = 0;
 
 		while (!iss.eof()) {
 			int b;
@@ -53,6 +54,7 @@ int StringCalc::Add(string numbers)
 			iss.get(comma) >> b;
 
 			if (iss.fail() || separators.find(comma) == string::npos || b < 0) throw invalid_argument{"invalid b"};
+			if (b > 1000) b = 0;
 			a += b;
 		}
 	

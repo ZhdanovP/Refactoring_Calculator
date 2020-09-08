@@ -110,3 +110,21 @@ TEST(CalculatorTest, SeparatorListNotTerminated) {
   StringCalc c;
   EXPECT_THROW(c.Add("//;5;15"), std::invalid_argument);
 }
+
+TEST(CalculatorTest, IgnoreGt1000) {
+	StringCalc c;
+ 	int res = c.Add("1001,15");
+  EXPECT_EQ(res, 15);
+}
+
+TEST(CalculatorTest, IgnoreGt1000Case2) {
+	StringCalc c;
+ 	int res = c.Add("15,1001");
+  EXPECT_EQ(res, 15);
+}
+
+TEST(CalculatorTest, IgnoreGt1000Case3) {
+	StringCalc c;
+ 	int res = c.Add("1001,1001,1001");
+  EXPECT_EQ(res, 0);
+}
