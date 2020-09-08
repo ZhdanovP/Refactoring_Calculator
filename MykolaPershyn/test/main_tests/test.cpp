@@ -51,7 +51,6 @@ TEST(CalculatorTest, InvalidArgument) {
   catch(...) {
     FAIL() << "Expected std::invalid_argument";
   }
-  ASSERT_EQ(actual, -1);
 }
 
 TEST(CalculatorTest, WrongArgSign) {
@@ -59,6 +58,7 @@ TEST(CalculatorTest, WrongArgSign) {
   int actual;
   try {
     actual = c.Add("-1,-1");
+    throw(std::invalid_argument("The argument is valid..."));
   }
   catch (const std::invalid_argument& e) {   
     ASSERT_EQ(e.what(), std::string("-1,-1"));
@@ -66,13 +66,21 @@ TEST(CalculatorTest, WrongArgSign) {
   catch(...) {
     FAIL() << "Expected std::invalid_argument";
   }
-  ASSERT_EQ(actual, -1);
 }
 
 TEST(CalculatorTest, WrongArgLetters) {
   StringCalc c;
-  int actual = c.Add("0abc1");
-  ASSERT_EQ(actual, -1);
+  int actual;
+  try {
+    actual = c.Add("0abc1");
+    throw(std::invalid_argument("The argument is valid..."));
+  }
+  catch (const std::invalid_argument& e) {   
+    ASSERT_EQ(e.what(), std::string("0abc1"));
+  }
+  catch(...) {
+    FAIL() << "Expected std::invalid_argument";
+  }
 }
 
 TEST(CalculatorTest, MultiArg) {
