@@ -44,16 +44,21 @@ int StringCalc::Add(string numbers)
 		int number = std::stoi(tokens[0]);
 		return (number >=0 ? number : -1);		
 	}
-	else if (tokens.size() == 2)
-	{
-		int number1 = std::stoi(tokens[0]);
-		int number2 = std::stoi(tokens[1]);
-
-		return (number1 >=0 && number2 >=0 ? number1 + number2 : -1);
-	}
 	else
-	{
-		// TODO next
-		return -1;
+	{		
+		int result = 0;
+		for (int i=0; i < tokens.size(); ++i)
+		{
+			int current_number = std::stoi(tokens[i]);
+			if (current_number < 0)
+			{
+				return -1;
+			}
+			else
+			{
+				result += current_number;
+			}			
+		}
+		return result;
 	}	
 }

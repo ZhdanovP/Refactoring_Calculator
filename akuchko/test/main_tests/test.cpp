@@ -60,3 +60,27 @@ TEST(CalculatorTest, WrongDelimeter2ValueTest) {
 	int actual = c.Add("3%6");
 	ASSERT_EQ(actual, -1);
 }
+
+TEST(CalculatorTest, ThreeValuesTest) {
+	StringCalc c;
+	int actual = c.Add("3,4,6");
+	ASSERT_EQ(actual, 13);
+}
+
+TEST(CalculatorTest, FourValuesTest) {
+	StringCalc c;
+	int actual = c.Add("10,3,4,6");
+	ASSERT_EQ(actual, 23);
+}
+
+TEST(CalculatorTest, FourValuesWithErrorTest) {
+	StringCalc c;
+	int actual = c.Add("10,3,-4,6");
+	ASSERT_EQ(actual, -1);
+}
+
+TEST(CalculatorTest, FourZeroValuesTest) {
+	StringCalc c;
+	int actual = c.Add("0,0,0,0");
+	ASSERT_EQ(actual, 0);
+}
