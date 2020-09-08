@@ -52,7 +52,9 @@ StringCalc::Add(string numbers)
 
     auto sum = 0;
     for (auto const& n : numbersVector) {
-        sum += n;
+        if (n > 0) {
+            sum += n;
+        }
     }
 
     return sum;

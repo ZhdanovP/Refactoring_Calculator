@@ -45,3 +45,11 @@ TEST(CalculatorTest, InvalidInputStringDelimiterTest)
     auto       actual = c.Add("2\n2");
     ASSERT_EQ(actual, 4);
 }
+
+
+TEST(CalculatorTest, NegativeNumberAreNotAllowedTest)
+{
+    StringCalc c;
+    auto       actual = c.Add("2,-2");
+    ASSERT_EQ(actual, 2);
+}
