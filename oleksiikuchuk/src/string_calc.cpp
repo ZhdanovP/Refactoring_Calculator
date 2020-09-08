@@ -26,11 +26,12 @@ int StringCalc::Add(string numbers)
 		if (iss.fail() || a < 0) return -1;
 
 		while (!iss.eof()) {
+			const string separators{",\n"};
 			int b;
 			char comma;
-			iss >> comma >> b;
+			iss.get(comma) >> b;
 
-			if (iss.fail() || comma != ',' || b < 0) return -1;
+			if (iss.fail() || separators.find(comma) == string::npos || b < 0) return -1;
 			a += b;
 		}
 	

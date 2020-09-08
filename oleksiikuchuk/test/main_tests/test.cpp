@@ -81,3 +81,15 @@ TEST(CalculatorTest, ThreeArg) {
  	int res = c.Add("5, 10, 15");
   EXPECT_EQ(res, 30);
 }
+
+TEST(CalculatorTest, EolAsSeparator) {
+  StringCalc c;
+ 	int res = c.Add("5\n10");
+  EXPECT_EQ(res, 15);
+}
+
+TEST(CalculatorTest, EolAndCommaSeparatorMixed) {
+  StringCalc c;
+ 	int res = c.Add("5\n10,15");
+  EXPECT_EQ(res, 30);
+}
