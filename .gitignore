@@ -38,3 +38,4 @@ test/.DS_Store
 out
 .vs
 .vscode
+build

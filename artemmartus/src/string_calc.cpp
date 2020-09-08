@@ -1,7 +1,7 @@
 #include "string_calc.hpp"
 #include <vector>
 #include <algorithm>
-#include <sstream>
+#include <regex>
 
 using namespace std;
 
@@ -31,16 +31,20 @@ int StringCalc::Add(string numbers)
 		else
 			return -1;
 	}
-	std::vector<std::string> seglist;
-	{
-		std::stringstream test(numbers);
-		std::string segment;
 
-		while (std::getline(test, segment, ','))
-		{
-			seglist.push_back(segment);
-		}
+	std::regex words_regex("[^\\n.,:;!?a-zA-Z ]+");
+	auto words_begin = std::sregex_iterator(numbers.begin(), numbers.end(), words_regex);
+	auto words_end = std::sregex_iterator();
+
+	std::vector<std::string> seglist;
+
+	for (std::sregex_iterator i = words_begin; i != words_end; ++i)
+	{
+		if ((*i).str().empty())
+			continue;
+		seglist.push_back((*i).str());
 	}
+
 	if (seglist.size() == 0)
 		return 0;
 	bool good = true;
