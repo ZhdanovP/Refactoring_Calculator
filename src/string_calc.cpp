@@ -21,9 +21,10 @@ StringCalc::~StringCalc()
 int StringCalc::Add(string numbers)
 {
 auto constexpr kFailedResult = -1;
+auto constexpr kEmptyString = 0;
 if(numbers.empty())
 {
- return kFailedResult;
+ return  kEmptyString;
 }
 
      std::string number;
