@@ -34,3 +34,7 @@
 .DS_Store
 src/.DS_Store
 test/.DS_Store
+
+out
+.vs
+.vscode
