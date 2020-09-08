@@ -21,18 +21,18 @@ int StringCalc::Add(string numbers)
 		if (numbers.empty()) return 0;
 
 		istringstream iss{numbers};
-		int a, b;
-		char comma;
-
+		int a;
 		iss >> a;
 		if (iss.fail() || a < 0) return -1;
-		if (iss.eof()) return a;
+
+		while (!iss.eof()) {
+			int b;
+			char comma;
+			iss >> comma >> b;
+
+			if (iss.fail() || comma != ',' || b < 0) return -1;
+			a += b;
+		}
 	
-		iss >> comma;
-		if (iss.fail() || iss.fail() || comma != ',') return -1;
-
-		iss >> b;
-		if (iss.fail() || !iss.eof() || b < 0) return -1;
-
-	 return a + b;
+		return a;
 }

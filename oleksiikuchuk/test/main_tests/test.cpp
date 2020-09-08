@@ -75,3 +75,9 @@ TEST(CalculatorTest, Commutativity) {
   int res2 = c.Add("10, 5");
   EXPECT_EQ(res1, res2);
 }
+
+TEST(CalculatorTest, ThreeArg) {
+  StringCalc c;
+ 	int res = c.Add("5, 10, 15");
+  EXPECT_EQ(res, 30);
+}
