@@ -45,13 +45,13 @@ TEST(CalculatorTest, SecondWrongValueTest) {
 
 TEST(CalculatorTest, BothWrongValueTest) {
 	StringCalc c;
-	int actual = c.Add("3,-6");
+	int actual = c.Add("-3,-6");
 	ASSERT_EQ(actual, -1);
 }
 
 TEST(CalculatorTest, WrongDelimeter2ValueTest) {
 	StringCalc c;
-  EXPECT_THROW(c.Add("3%6"), std::invalid_argument);
+  EXPECT_THROW(c.Add("12%6"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, ThreeValuesTest) {
@@ -90,12 +90,6 @@ TEST(CalculatorTest, NewDelimeter2Test) {
 	ASSERT_EQ(actual, 3);
 }
 
-TEST(CalculatorTest, AcceptedDelimetersTest) {
-	StringCalc c;
-	int actual = c.Add("1;2\n3");
-	ASSERT_EQ(actual, 6);
-}
-
 TEST(CalculatorTest, WrongDelimeterThreeArgsTest) {
 	StringCalc c;
  EXPECT_THROW(c.Add("1;2%3"), std::invalid_argument);
@@ -107,13 +101,13 @@ TEST(CalculatorTest, BigNumberTest) {
 	ASSERT_EQ(actual, 2);
 }
 
-TEST(CalculatorTest, MultipleCharacterDelimeterTest) {
+TEST(CalculatorTest, SecondMultipleCharacterDelimeterTest) {
 	StringCalc c;
-	int actual = c.Add("\n1**2**3");
-	ASSERT_EQ(actual, 6);
+	int actual = c.Add("//;\n1;2");
+	ASSERT_EQ(actual, 3);
 }
 
-TEST(CalculatorTest, SecondMultipleCharacterDelimeterTest) {
+TEST(CalculatorTest, FormatMultipleCharacterDelimeterTest) {
 	StringCalc c;
 	int actual = c.Add("//[***]\n1***2***3");
 	ASSERT_EQ(actual, 6);

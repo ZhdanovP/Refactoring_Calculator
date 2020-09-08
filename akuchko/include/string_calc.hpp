@@ -11,6 +11,9 @@ public:
 	~StringCalc();
 	
 	int Add(std::string numbers);
+
+private:
+	const int max_number_ = 1000;
 };
 
 #endif
