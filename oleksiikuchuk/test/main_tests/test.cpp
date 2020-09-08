@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "string_calc.hpp"
 #include <iostream>
+#include <stdexcept>
 
 TEST(CalculatorTest, OneArg) {
 	StringCalc c;
@@ -16,14 +17,12 @@ TEST(CalculatorTest, TwoArg) {
 
 TEST(CalculatorTest, EmptySecondArg) {
 	StringCalc c;
- 	int res = c.Add("42,");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add("42,"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, EmptyFirstArg) {
 	StringCalc c;
- 	int res = c.Add(",42");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add(",42"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, EmptyString) {
@@ -34,21 +33,18 @@ TEST(CalculatorTest, EmptyString) {
 
 TEST(CalculatorTest, InvalidString) {
   StringCalc c;
-  int res = c.Add("a");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add("s"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, NegativeArgument) {
 	StringCalc c;
- 	int res = c.Add("-5");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add("42,"), std::invalid_argument);
 }
 
 
 TEST(CalculatorTest, NegativeArguments) {
 	StringCalc c;
- 	int res = c.Add("-5,-5");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add("42,"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, ZeroArg) {
@@ -102,18 +98,15 @@ TEST(CalculatorTest, CustomSeparators) {
 
 TEST(CalculatorTest, NotSpecifiedSeparator) {
   StringCalc c;
- 	int res = c.Add("5;15");
-  EXPECT_EQ(res, -1);
+ 	EXPECT_THROW(c.Add("5;15"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, NotSpecifiedSeparatorButSPecifiedPrefix) {
   StringCalc c;
- 	int res = c.Add("//,5;15");
-  EXPECT_EQ(res, -1);
+  EXPECT_THROW(c.Add("//,5;15"), std::invalid_argument);
 }
 
 TEST(CalculatorTest, SeparatorListNotTerminated) {
   StringCalc c;
- 	int res = c.Add("//;5;15");
-  EXPECT_EQ(res, -1);
+  EXPECT_THROW(c.Add("//;5;15"), std::invalid_argument);
 }
