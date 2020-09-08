@@ -15,7 +15,7 @@ TEST(CalculatorTest, SampleTest) {
 
 TEST(CalculatorTest, EmptyString) {
   StringCalc c;
-  int actual = c.Add("0");
+  int actual = c.Add("");
   ASSERT_EQ(actual, 0);
 }
 
