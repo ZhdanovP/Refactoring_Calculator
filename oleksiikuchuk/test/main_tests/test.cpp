@@ -128,3 +128,32 @@ TEST(CalculatorTest, IgnoreGt1000Case3) {
  	int res = c.Add("1001,1001,1001");
   EXPECT_EQ(res, 0);
 }
+
+TEST(CalculatorTest, MultipleCustomSeparators) {
+  StringCalc c;
+ 	int res = c.Add("//;`\n5;15`,20");
+  EXPECT_EQ(res, 40);
+}
+
+TEST(CalculatorTest, MultipleCustomSeparatorsCase2) {
+  StringCalc c;
+ 	int res = c.Add("//;`*,5*`15\n20");
+  EXPECT_EQ(res, 40);
+}
+
+TEST(CalculatorTest, MultipleCustomSeparatorsNotTerminatedList) {
+  StringCalc c;
+ 	EXPECT_THROW(c.Add("//;`*5*15*20"), std::invalid_argument);
+}
+
+TEST(CalculatorTest, MultipleCustomSeparatorsNotSpecifiedSeparator) {
+  StringCalc c;
+ 	EXPECT_THROW(c.Add("//;`,5*15*20"), std::invalid_argument);
+}
+
+TEST(CalculatorTest, MultipleCustomSeparatorsNotSpecifiedSeparatorCase2) {
+  StringCalc c;
+ 	EXPECT_THROW(c.Add("//;`,5;*15,20"), std::invalid_argument);
+}
+
+

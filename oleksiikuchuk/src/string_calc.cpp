@@ -50,10 +50,18 @@ int StringCalc::Add(string numbers)
 
 		while (!iss.eof()) {
 			int b;
-			char comma;
-			iss.get(comma) >> b;
 
-			if (iss.fail() || separators.find(comma) == string::npos || b < 0) throw invalid_argument{"invalid b"};
+			while(1) {
+				int ch = iss.peek();
+				char comma;
+				if (separators.find(ch) != string::npos)
+					iss.get(comma);
+				else
+					break;
+			}
+			iss >> b;
+
+			if (iss.fail() || b < 0) throw invalid_argument{"invalid b"};
 			if (b > 1000) b = 0;
 			a += b;
 		}
