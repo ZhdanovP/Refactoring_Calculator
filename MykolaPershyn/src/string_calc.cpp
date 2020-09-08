@@ -31,6 +31,11 @@ namespace {
         }
         return s.substr(parsed);
     }
+    
+    
+    string parseSeparator(string s, string &a, int &parsed) {
+        
+    }
 };
 
 int StringCalc::Add(string numbers)
@@ -44,20 +49,17 @@ int StringCalc::Add(string numbers)
     // first number
     string rest = ::parseNum(numbers, a, parsed);
     if(0 == parsed) return -1; // expecting a number
-    if(numbers.size() == parsed) {
-        // the string contains just one number
-        return a;
-    }
-    // coma
-    if(',' != rest[0]) return -1;
-    rest = rest.substr(1);
     
-    // second number
-    string rest2 = ::parseNum(rest, b, parsed);
-    if(0 == parsed) return -1; // expecting a number
-    if(rest.size() == parsed) {
-        return a + b;
+    while("" != rest) {
+        // separator
+        if(',' != rest[0]) return -1;
+        rest = rest.substr(1);
+        
+        // second number
+        rest = ::parseNum(rest, b, parsed);
+        if(0 == parsed) return -1; // expecting a number
+        a += b;
     }
 
-    return -1;
+    return a;
 }
