@@ -5,8 +5,7 @@
 
 using namespace std;
 
-StringCalc::StringCalc()
-    : minValue(0), maxValue(1000) {}
+StringCalc::StringCalc() : minValue(0), maxValue(1000) {}
 
 StringCalc::~StringCalc() {}
 
@@ -14,6 +13,7 @@ int StringCalc::Add(string numbers) {
   int result = 0;
   if (!parseToOperands(numbers)) {
     result = -1;
+    throw invalid_argument("Invalid argument");
   } else {
     for (auto i : operands) {
       if (i >= minValue && i <= maxValue)

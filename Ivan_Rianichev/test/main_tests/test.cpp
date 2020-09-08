@@ -32,20 +32,17 @@ TEST(CalculatorTest, OneOperandTest) {
 
 TEST(CalculatorTest, SymbolTest) {
   StringCalc c;
-  int actual = c.Add("cdfgdg");
-  ASSERT_EQ(actual, -1);
+  EXPECT_THROW({ c.Add("cdfgdg"); }, std::invalid_argument);
 }
 
 TEST(CalculatorTest, NegativeNumberTest) {
   StringCalc c;
-  int actual = c.Add("-10");
-  ASSERT_EQ(actual, -1);
+  EXPECT_THROW({ c.Add("-10"); }, std::invalid_argument);
 }
 
 TEST(CalculatorTest, SymbolTest2) {
   StringCalc c;
-  int actual = c.Add("cdfgdg,sdfsfd");
-  ASSERT_EQ(actual, -1);
+  EXPECT_THROW({ c.Add("cdfgdg,sdfsfd"); }, std::invalid_argument);
 }
 
 TEST(CalculatorTest, MultipleNumbers) {
