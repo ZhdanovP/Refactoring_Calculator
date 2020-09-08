@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "string_calc.hpp"
 #include <iostream>
+#include <stdexcept>
 
 TEST(CalculatorTest, TestName) {
   EXPECT_EQ(1, 1);
@@ -37,9 +38,34 @@ TEST(CalculatorTest, SimpleSum) {
   ASSERT_EQ(actual, 3);
 }
 
+TEST(CalculatorTest, InvalidArgument) {
+  StringCalc c;
+  int actual;
+  try {
+    actual = c.Add("abc");
+    throw(std::invalid_argument("The argument is valid..."));
+  }
+  catch (const std::invalid_argument& e) {   
+    ASSERT_EQ(e.what(), std::string("abc"));
+  }
+  catch(...) {
+    FAIL() << "Expected std::invalid_argument";
+  }
+  ASSERT_EQ(actual, -1);
+}
+
 TEST(CalculatorTest, WrongArgSign) {
   StringCalc c;
-  int actual = c.Add("-1,-1");
+  int actual;
+  try {
+    actual = c.Add("-1,-1");
+  }
+  catch (const std::invalid_argument& e) {   
+    ASSERT_EQ(e.what(), std::string("-1,-1"));
+  }
+  catch(...) {
+    FAIL() << "Expected std::invalid_argument";
+  }
   ASSERT_EQ(actual, -1);
 }
 
