@@ -109,7 +109,7 @@ TEST(CalculatorTest, SeparatorNewLine) {
 
 TEST(CalculatorTest, DifferentSeparators) {
   StringCalc c;
-  int actual = c.Add("1,2 3\n4");
+  int actual = c.Add("1\n2,3\n4");
   ASSERT_EQ(actual, 10);
 }
 
