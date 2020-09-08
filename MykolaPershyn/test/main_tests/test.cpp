@@ -48,3 +48,27 @@ TEST(CalculatorTest, WrongArgLetters) {
   int actual = c.Add("0abc1");
   ASSERT_EQ(actual, -1);
 }
+
+TEST(CalculatorTest, SeparatorComa) {
+  StringCalc c;
+  int actual = c.Add("1,2");
+  ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, SeparatorSpace) {
+  StringCalc c;
+  int actual = c.Add("1,2");
+  ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, SeparatorNewLine) {
+  StringCalc c;
+  int actual = c.Add("1\n2");
+  ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, DifferentSeparators) {
+  StringCalc c;
+  int actual = c.Add("1,2 3\n4");
+  ASSERT_EQ(actual, 10);
+}
