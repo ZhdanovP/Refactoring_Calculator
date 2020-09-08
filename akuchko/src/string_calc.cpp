@@ -18,9 +18,11 @@ StringCalc::~StringCalc()
 
 int StringCalc::Add(string numbers)
 {	
+	std::replace( numbers.begin(), numbers.end(), '\n', ','); // replace all 'x' to 'y'	
+	std::cout << "numbers: " << numbers << std::endl;
 	std::vector<string> wrong_characters {"/", "%", " ", "."};
 	for (const auto &chr : wrong_characters)
-	{
+	{		
 		if (numbers.find(chr) != std::string::npos) {
     		return -1;
 		}
@@ -32,6 +34,7 @@ int StringCalc::Add(string numbers)
           
     while(getline(check1, intermediate, ',')) 
     { 
+		std::cout << "----" << intermediate << "----" << std::endl;
         tokens.push_back(intermediate); 
     } 
           

@@ -84,3 +84,15 @@ TEST(CalculatorTest, FourZeroValuesTest) {
 	int actual = c.Add("0,0,0,0");
 	ASSERT_EQ(actual, 0);
 }
+
+TEST(CalculatorTest, NewDelimeterTest) {
+	StringCalc c;
+	int actual = c.Add("1,0\n,2");
+	ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, NewDelimeter2Test) {
+	StringCalc c;
+	int actual = c.Add("1\n2");
+	ASSERT_EQ(actual, 3);
+}
