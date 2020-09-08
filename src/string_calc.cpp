@@ -1,6 +1,10 @@
 #include "string_calc.hpp"
-#include <vector>
 #include <algorithm>
+#include <sstream>
+#include <string>
+
+
+
 
 using namespace std;
 
@@ -16,5 +20,22 @@ StringCalc::~StringCalc()
 
 int StringCalc::Add(string numbers)
 {
-	return 0;//Not Implemented yet
+
+if(numbers.empty())
+{
+ return -1;
+}
+
+     std::string number;
+     std::istringstream numbersStream(numbers);
+            auto sum = 0;
+
+             while (std::getline(numbersStream, number, ','))
+             {
+                    sum += std::stoi(number);
+
+             }
+
+    return sum;//Not Implemented yet
+
 }
