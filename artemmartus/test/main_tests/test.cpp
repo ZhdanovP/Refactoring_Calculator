@@ -50,12 +50,6 @@ TEST(CalculatorTest, capital_two_letters) {
 	ASSERT_EQ(actual, -1);
 }
 
-TEST(CalculatorTest, three_numbers) {
-	StringCalc c;
-	int actual = c.Add("2,2,2");
-	ASSERT_EQ(actual, -1);
-}
-
 TEST(CalculatorTest, number_char) {
 	StringCalc c;
 	int actual = c.Add("2,a");
@@ -80,5 +74,32 @@ TEST(CalculatorTest, three_with_chars) {
 	ASSERT_EQ(actual, -1);
 }
 
+TEST(CalculatorTest, three_numbers) {
+	StringCalc c;
+	int actual = c.Add("2,2,2");
+	ASSERT_EQ(actual, 6);
+}
 
+TEST(CalculatorTest, three_numbers_six) {
+	StringCalc c;
+	int actual = c.Add("0,2,4");
+	ASSERT_EQ(actual, 6);
+}
 
+TEST(CalculatorTest, four_numbers) {
+	StringCalc c;
+	int actual = c.Add("2,2,7,2");
+	ASSERT_EQ(actual, 6+7);
+}
+
+TEST(CalculatorTest, five_num) {
+	StringCalc c;
+	int actual = c.Add("1,2,3,4,5");
+	ASSERT_EQ(actual, 6+4+5);
+}
+
+TEST(CalculatorTest, five_num_bad) {
+	StringCalc c;
+	int actual = c.Add("1,2,3,a,5");
+	ASSERT_EQ(actual, -1);
+}

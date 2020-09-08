@@ -43,23 +43,22 @@ int StringCalc::Add(string numbers)
 	}
 	if (seglist.size() == 0)
 		return 0;
-	if (seglist.size() == 1)
-	{
-		auto num = seglist[0];
-		if (is_number(num))
-			return std::atoi(num.c_str());
+	bool good = true;
+	int sum = 0;
+
+	for (auto &str : seglist)
+		if (!is_number(str))
+		{
+			good = false;
+			break;
+		}
 		else
-			return -1;
-	}
-	if (seglist.size() == 2)
-	{
-		if (!is_number(seglist[0].c_str()) || !is_number(seglist[1].c_str()))
-			return -1;
-		int a = std::atoi(seglist[0].c_str()), b = std::atoi(seglist[1].c_str());
-		return a + b;
-	}
-	else
-	{
+		{
+			sum += std::atoi(str.c_str());
+		}
+
+	if (!good)
 		return -1;
-	}
+
+	return sum;
 }
