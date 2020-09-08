@@ -4,18 +4,19 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
 
 using namespace std;
 
 namespace {
 
 std::vector<int>
-getNumbers(string const& inputNumbers)
+getNumbers(std::string inputNumbers)
 {
+    std::replace(inputNumbers.begin(), inputNumbers.end(), '\n', ',');
     std::istringstream numbersStream(inputNumbers);
-
-    std::vector<int> numbers;
-    std::string      number;
+    std::vector<int>   numbers;
+    std::string        number;
     while (std::getline(numbersStream, number, ',')) {
         try {
             numbers.push_back(std::stoi(number));
