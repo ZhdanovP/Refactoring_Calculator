@@ -21,7 +21,7 @@ int StringCalc::Add(string numbers)
 	
 	// std::cout << "numbers: " << numbers << std::endl;
 	
-	std::vector<string> wrong_characters {"/", "%"};
+	std::vector<string> wrong_characters {"%"};
 	for (const auto &chr : wrong_characters)
 	{		
 		if (numbers.find(chr) != std::string::npos) {
@@ -30,7 +30,7 @@ int StringCalc::Add(string numbers)
 		}
 	}
 
-	std::vector<char> accepted_delimeters {' ', '.', '\n', ';'};
+	std::vector<char> accepted_delimeters {' ', '.', '\n', ';', '*', '[', ']', '/'};
 	for (const auto &chr : accepted_delimeters)
 	{		
 		std::replace( numbers.begin(), numbers.end(), chr, ',');		

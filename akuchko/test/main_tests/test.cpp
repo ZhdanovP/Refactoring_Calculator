@@ -106,3 +106,15 @@ TEST(CalculatorTest, BigNumberTest) {
 	int actual = c.Add("1001,2");
 	ASSERT_EQ(actual, 2);
 }
+
+TEST(CalculatorTest, MultipleCharacterDelimeterTest) {
+	StringCalc c;
+	int actual = c.Add("\n1**2**3");
+	ASSERT_EQ(actual, 6);
+}
+
+TEST(CalculatorTest, SecondMultipleCharacterDelimeterTest) {
+	StringCalc c;
+	int actual = c.Add("//[***]\n1***2***3");
+	ASSERT_EQ(actual, 6);
+}
