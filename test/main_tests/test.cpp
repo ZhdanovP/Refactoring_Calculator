@@ -24,6 +24,9 @@ TEST_F(CalculatorTest, TestCommaAsLast) {
   EXPECT_EQ(23, m_Calculator.Add("19,4,"));
  }
 
+TEST_F(CalculatorTest, TestFourArguments) {
+  EXPECT_EQ(3400, m_Calculator.Add("19,4,2340,1037"));
+ }
 
 // TEST(CalculatorTest, SampleTest) {
 // 	StringCalc c;

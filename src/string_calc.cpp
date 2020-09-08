@@ -16,9 +16,8 @@ StringCalc::~StringCalc()
 }
 
 
-int StringCalc::Add(string numbers)
-{
-  
+int StringCalc::Add(string numbers){
+
     const std::regex rgx("[0-9]|,");
 
     if(std::regex_replace(numbers,rgx,"").length()){
@@ -36,9 +35,8 @@ int StringCalc::Add(string numbers)
            
            if(endPos==std::string::npos){
                endPos = numbers.length();    
-           }                  
-           
-                  
+           } 
+                           
            result += stoi(numbers.substr(curPos,endPos - curPos));
 
            curPos = endPos+1; 
