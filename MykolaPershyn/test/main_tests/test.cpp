@@ -78,3 +78,9 @@ TEST(CalculatorTest, DifferentSeparators) {
   int actual = c.Add("1,2 3\n4");
   ASSERT_EQ(actual, 10);
 }
+
+TEST(CalculatorTest, GeneralisedSeparators) {
+  StringCalc c;
+  int actual = c.Add("//;\n1;2");
+  ASSERT_EQ(actual, 2);
+}
