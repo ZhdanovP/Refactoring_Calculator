@@ -3,6 +3,7 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 class NumbersProvider
 {
@@ -13,15 +14,14 @@ class NumbersProvider
      std::string getEndOfTheNextNumber();
    
    private:
-   	   void checkWrongArguments();
+   	   void prepareNumbers();
    	   void parseSeparators();
 
        std::string m_Numbers;
        std::set<std::string> separators;
+       std::vector<std::string> m_OutNumbers;
 
        size_t m_CurPos = 0;
-       size_t m_EndPos = 0;    
-       size_t m_Offs = 0;
 
 };
 

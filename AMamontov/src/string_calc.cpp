@@ -13,14 +13,12 @@ int StringCalc::Add(string numbers){
         
            string sNumber=mumbersProvider.getEndOfTheNextNumber();
 
-           if(sNumber.length()){
-           
            int currentNumber = stoi(sNumber);
 
-           if(currentNumber<1000)
+           if(currentNumber<1000){
               result += currentNumber;
-                    
-                      } 
+           }
+                  
       }             
     
     return result;

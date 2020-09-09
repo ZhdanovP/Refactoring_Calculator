@@ -1,38 +1,82 @@
 #include "numbersprovider.hpp"
 
 #include <algorithm>
-#include <regex>
 #include <iostream>
+#include <cctype>
+#include <functional>
 
 using namespace std;
 
 NumbersProvider::NumbersProvider(std::string numbers):m_Numbers(numbers)
 {
     parseSeparators();
-    checkWrongArguments();
+    prepareNumbers();
 }
 
 
 bool NumbersProvider::hasNextNumber() 
 {
-    return m_CurPos<m_Numbers.length();
+    return m_CurPos<m_OutNumbers.size();
 }
 
-void NumbersProvider::checkWrongArguments(){
+void NumbersProvider::prepareNumbers(){
  
-    string wrongSymbs = std::regex_replace(m_Numbers,std::regex("[0-9]"),"");
+     string number;
+     string separator; 
 
-    for(auto separator: separators){
-      std::string::size_type pos = 0;
+     for (auto symb : m_Numbers){
 
-  while((pos = wrongSymbs.find(separator, pos)) != std::string::npos){
-      wrongSymbs.replace(pos, separator.length(), "");
-  }
-    }
+         if(isdigit(symb)){
 
-    if (wrongSymbs.length()) {
-         throw std::invalid_argument("wrong argument");
-    }
+             number += string(1,symb);
+
+          }
+         else{
+
+             separator += string(1,symb);
+             
+             std::function<bool(const string &)> func = [separator]( const string &curSeporator ) -> bool
+             {
+                 if(separator.length()>curSeporator.length()){
+                 	return false;
+                 } 
+
+                 return  ( curSeporator.find(separator) ==0 )?true:false;    
+             };
+
+             set<string>::iterator separatorExistence =  find_if(separators.begin(),separators.end(),func); 
+
+            if(separatorExistence!=separators.end()){
+
+            if((*separatorExistence)==separator){
+
+                 if(number.length()){
+                    m_OutNumbers.emplace_back(number); 
+                    number="";    
+                 }
+
+                 separator = "";
+                }
+
+             }
+             else{
+             	throw invalid_argument("illegal symbol");
+             } 
+ 
+         }
+
+     }
+
+      if(number.length()){
+             
+             m_OutNumbers.emplace_back(number);
+      }
+     
+}
+
+std::string NumbersProvider::getEndOfTheNextNumber(){
+
+      return m_OutNumbers[m_CurPos++];
 }
 
 void NumbersProvider::parseSeparators(){
@@ -85,32 +129,4 @@ void NumbersProvider::parseSeparators(){
     separators.insert(",");
     separators.insert("\n");
 
-   /* for(auto separator: separators){
-          cout<<"separator="<<separator<<endl;
-    }*/
-}
-
-std::string NumbersProvider::getEndOfTheNextNumber(){
-
-    m_EndPos = m_Numbers.length();
-    
-    for(auto separator: separators){
-
-     size_t endPos = m_Numbers.find(separator,m_CurPos);
-                      
-           if(endPos==std::string::npos){
-                endPos = m_Numbers.length();
-              }          
-           
-           if(endPos < m_EndPos){  
-                m_EndPos = endPos;
-                m_Offs = separator.length();
-              }
-     }
-
-   std::string sNumber = m_Numbers.substr(m_CurPos,m_EndPos - m_CurPos);
-
-   m_CurPos = m_EndPos+m_Offs;
-
-   return sNumber;
 }
