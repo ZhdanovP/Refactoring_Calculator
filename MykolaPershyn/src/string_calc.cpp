@@ -49,6 +49,25 @@ namespace {
             return s;
         }
     }
+
+    string parseDefaultSeparator(string s, int &parsed) {
+        if(s.size() >= 1) {
+            if('\n' == s[0] || ',' == s[0]) {
+                parsed = 1;
+                return s.substr(parsed);
+            }
+            else {
+                parsed = 0;
+                return s;
+            }
+        }
+        else {
+            parsed = 0;
+            return s;
+        }
+    }
+
+    
 };
 
 int StringCalc::Add(string numbers)
@@ -59,21 +78,35 @@ int StringCalc::Add(string numbers)
     int b;
     int parsed;
     string sep = "";
+    bool defaultSep = true;
     
     auto fail = [&numbers]() {
         throw(std::invalid_argument(numbers));
         return -1;
     };
-    // Parsed
     
-    
+    string rest = numbers;
+    if("//" == numbers.substr(0, 2)) {
+        defaultSep = false;
+        if('[' == numbers[2]) {
+            size_t pos = numbers.find("]\n");
+            if(string::npos == pos) return fail();
+            sep = numbers.substr(3, pos + 1);
+            rest = numbers.substr(pos + 2);
+        }
+        else {
+            sep = numbers.substr(2, 3);
+            rest = numbers.substr(4);
+            if('\n' != numbers[4]) return fail();
+        }
+    }
     // first number
-    string rest = ::parseNum(numbers, a, parsed);
+    rest = ::parseNum(rest, a, parsed);
     if(0 == parsed) return fail(); // expecting a number
     
     while("" != rest) {
         // separator
-        rest = parseSeparator(rest, ",", parsed);
+        rest = defaultSep ? parseDefaultSeparator(rest, parsed) : parseSeparator(rest, sep, parsed);
         if(0 == parsed) return fail();
         
         // second number
