@@ -32,6 +32,10 @@ TEST_F(CalculatorTest, TestWithBothSeparators) {
   EXPECT_EQ(7500, m_Calculator.Add("19\n4,2340\n1037,4100"));
  }
 
+TEST_F(CalculatorTest, TestExpandedSeparators) {
+  EXPECT_EQ(7750, m_Calculator.Add("//;*#&\n19\n4,2340;1037;4100#100*100&50"));
+ }
+
 // TEST(CalculatorTest, SampleTest) {
 // 	StringCalc c;
 // 	int actual = c.Add("2,2");
