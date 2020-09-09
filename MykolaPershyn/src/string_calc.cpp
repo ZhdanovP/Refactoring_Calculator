@@ -102,7 +102,6 @@ int StringCalc::Add(string numbers)
     }
     // first number
     rest = ::parseNum(rest, a, parsed);
-    if(0 == parsed) return fail(); // expecting a number
     
     while("" != rest) {
         // separator
@@ -111,7 +110,6 @@ int StringCalc::Add(string numbers)
         
         // second number
         rest = ::parseNum(rest, b, parsed);
-        if(0 == parsed) return fail();
         a += b;
     }
 
