@@ -74,3 +74,15 @@ TEST(CalculatorTest, OperandsOver1000Ignored) {
   int actual = c.Add("1001,2");
   ASSERT_EQ(actual, 2);
 }
+
+TEST(CalculatorTest, CustomOperandDivider) {
+  StringCalc c;
+  int actual = c.Add("//;\n1;2");
+  ASSERT_EQ(actual, 3);
+}
+
+TEST(CalculatorTest, CustomOperandDivider2) {
+  StringCalc c;
+  int actual = c.Add("//;\n1;2,3\n4");
+  ASSERT_EQ(actual, 10);
+}

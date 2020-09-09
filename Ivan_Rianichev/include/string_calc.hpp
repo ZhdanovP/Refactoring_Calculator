@@ -17,6 +17,7 @@ class StringCalc {
   bool parseToOperands(std::string numbers);
 
   std::vector<int> operands;
+  const std::string customDividerPrefix;
   const int minValue;
   const int maxValue;
 };
