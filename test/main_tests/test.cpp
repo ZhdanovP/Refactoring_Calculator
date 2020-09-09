@@ -74,3 +74,10 @@ TEST(CalculatorTest, OnlyListOfDelimitersShouldFailTest)
     auto       actual = c.Add("//;*,");
     ASSERT_EQ(actual, -1);
 }
+
+TEST(CalculatorTest, OnlyNumberLess1000AllowedTest)
+{
+    StringCalc c;
+    auto       actual = c.Add("1000,2");
+    ASSERT_EQ(actual, 2);
+}

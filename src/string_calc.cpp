@@ -94,7 +94,7 @@ StringCalc::Add(string numbers)
 
     auto sum = 0;
     for (auto const& n : numbersVector) {
-        if (n > 0) {
+        if (n > 0 && n < 1000) {
             sum += n;
         }
     }
