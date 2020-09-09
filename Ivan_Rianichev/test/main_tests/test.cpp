@@ -53,8 +53,7 @@ TEST(CalculatorTest, MultipleNumbers) {
 
 TEST(CalculatorTest, FloatNumbersTest) {
   StringCalc c;
-  int actual = c.Add("2.5,2.5");
-  ASSERT_EQ(actual, 4);
+  EXPECT_THROW({ c.Add("2.5,2.5"); }, std::invalid_argument);
 }
 
 TEST(CalculatorTest, TestForNewLineDivider) {

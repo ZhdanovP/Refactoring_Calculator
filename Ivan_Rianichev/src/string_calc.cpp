@@ -13,7 +13,6 @@ StringCalc::~StringCalc() {}
 int StringCalc::Add(string numbers) {
   int result = 0;
   if (!parseToOperands(numbers)) {
-    result = -1;
     throw invalid_argument("Invalid argument");
   } else {
     for (auto i : operands) {
@@ -43,7 +42,7 @@ bool StringCalc::parseToOperands(string numbers) {
   std::string item;
 
   while (std::getline(ss, item)) {
-    if (item >= "0" && item < "9999") {
+    if (isNumber(item)) {
       operands.push_back(std::stoi(item));
     } else {
       result = false;
@@ -51,4 +50,9 @@ bool StringCalc::parseToOperands(string numbers) {
     }
   }
   return result;
+}
+
+bool StringCalc::isNumber(const string& operand) {
+  return !operand.empty() &&
+         std::all_of(operand.begin(), operand.end(), ::isdigit);
 }

@@ -15,6 +15,7 @@ class StringCalc {
 
  private:
   bool parseToOperands(std::string numbers);
+  bool isNumber(const std::string& operand);
 
   std::vector<int> operands;
   const std::string customDividerPrefix;
