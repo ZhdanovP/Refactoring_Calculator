@@ -80,8 +80,8 @@ int StringCalc::Add(string numbers)
     string sep = "";
     bool defaultSep = true;
     
-    auto fail = [&numbers]() {
-        throw(std::invalid_argument(numbers));
+    auto fail = [&numbers](string s = "") {
+        throw(std::invalid_argument(numbers + s));
         return -1;
     };
     
@@ -92,12 +92,12 @@ int StringCalc::Add(string numbers)
             size_t pos = numbers.find("]\n");
             if(string::npos == pos) return fail();
             sep = numbers.substr(3, pos + 1);
-            rest = numbers.substr(pos + 2);
+            rest = numbers.substr(pos + 3);
         }
         else {
-            sep = numbers.substr(2, 3);
+            sep = numbers.substr(2, 1);
             rest = numbers.substr(4);
-            if('\n' != numbers[4]) return fail();
+            if('\n' != numbers[3]) return fail();
         }
     }
     // first number
