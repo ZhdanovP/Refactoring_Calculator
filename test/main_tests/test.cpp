@@ -28,6 +28,10 @@ TEST_F(CalculatorTest, TestFourArguments) {
   EXPECT_EQ(3400, m_Calculator.Add("19,4,2340,1037"));
  }
 
+TEST_F(CalculatorTest, TestWithBothSeparators) {
+  EXPECT_EQ(7500, m_Calculator.Add("19\n4,2340\n1037,4100"));
+ }
+
 // TEST(CalculatorTest, SampleTest) {
 // 	StringCalc c;
 // 	int actual = c.Add("2,2");
