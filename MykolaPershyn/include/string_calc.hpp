@@ -6,11 +6,11 @@
 class StringCalc
 {
 public:
-	StringCalc();
+	StringCalc() = default;
 
-	~StringCalc();
+	~StringCalc() = default;
 	
-	int Add(std::string numbers);
+	int Add(const std::string& numbers);
 };
 
 #endif

@@ -1,84 +1,47 @@
 #include "string_calc.hpp"
-#include <vector>
 #include <algorithm>
-#include <sstream>
 #include <iostream>
+#include <optional>
 
 using namespace std;
 
-StringCalc::StringCalc()
-{
-}
-
-
-StringCalc::~StringCalc()
-{
-}
-
 namespace {
-    string parseNum(string s, int &a, int &parsed) {
+    template<class A, class B>
+    inline const A& const_f(const A& a, const B&) {return a;}
+    
+    constexpr bool isDigit(char c) {
+        return '0' <= c && c <= '9';
+    }
+
+    string parseNum(int &a, const string& input) {
+        auto it = find_if_not(input.cbegin(), input.cend(), isDigit);
         a = 0;
-        parsed = 0;
-        for(char c : s) {
-            if('0' <= c && c <= '9')
-            {
-                ++parsed;
-                a *= 10;
-                a += c - '0';
-            }
-            else
-                break;
-        }
-        return s.substr(parsed);
-    }
-    
-    
-    string parseSeparator(string s, string sep, int &parsed) {
-        if(s.size() >= sep.size()) {
-            if(s.substr(0, sep.size()) == sep) {
-                parsed = sep.size();
-                return s.substr(parsed);
-            }
-            else {
-                parsed = 0;
-                return s;
-            }
-        }
-        else {
-            parsed = 0;
-            return s;
-        }
+        const auto accumDigit = [&](char c){a *= 10; a += c - '0';};
+        for_each(input.cbegin(), it, accumDigit);
+        return input.substr(it - input.cbegin());
     }
 
-    string parseDefaultSeparator(string s, int &parsed) {
-        if(s.size() >= 1) {
-            if('\n' == s[0] || ',' == s[0]) {
-                parsed = 1;
-                return s.substr(parsed);
-            }
-            else {
-                parsed = 0;
-                return s;
-            }
-        }
-        else {
-            parsed = 0;
-            return s;
-        }
+    string parseDefaultSeparator(optional<string>& val, const string& input) {
+        return ("\n" == input.substr(0, 1) || "," == input.substr(0, 1))
+        ? const_f(input.substr(1), val = input.substr(0, 1))
+        : input;
     }
-
     
+    string parseString(string s, optional<string>& val, const string& input) {
+        return input.substr(0, s.size()) == s
+        ? const_f(input.substr(s.size()), val = input.substr(0, s.size()))
+        : input;
+    }
 };
 
-int StringCalc::Add(string numbers)
+int StringCalc::Add(const string& numbers)
 {
     // empty case
     if("" == numbers) return 0;
-    int a;
-    int b;
+    int sum = 0;
     int parsed;
-    string sep = "";
-    bool defaultSep = true;
+    optional<string> sep = nullopt;
+    optional<string> val;
     
     auto fail = [&numbers](string s = "") {
         throw(std::invalid_argument(numbers + s));
@@ -86,33 +49,39 @@ int StringCalc::Add(string numbers)
     };
     
     string rest = numbers;
-    if("//" == numbers.substr(0, 2)) {
-        defaultSep = false;
-        if('[' == numbers[2]) {
-            size_t pos = numbers.find("]\n");
+    
+    // Parse separator if specified
+    rest = parseString("//", val = nullopt, rest);
+    if(nullopt != val) {
+        if('[' == rest[0]) {
+            size_t pos = rest.find("]\n");
             if(string::npos == pos) return fail();
-            sep = numbers.substr(3, pos - 3);
-            rest = numbers.substr(pos + 2);
+            sep = rest.substr(1, pos - 3);
+            rest = rest.substr(pos + 2);
         }
         else {
-            sep = numbers.substr(2, 1);
-            rest = numbers.substr(4);
-            if('\n' != numbers[3]) return fail();
+            if('\n' != rest[1]) return fail();
+            sep = rest.substr(0, 1);
+            rest = rest.substr(2);
         }
     }
-    // first number
-    rest = ::parseNum(rest, a, parsed);
-    if(a > 1000) a = 0;
+
+    // First number
+    rest = ::parseNum(sum, rest);
+    if(sum > 1000) sum = 0;
     
     while("" != rest) {
         // separator
-        rest = defaultSep ? parseDefaultSeparator(rest, parsed) : parseSeparator(rest, sep, parsed);
-        if(0 == parsed) return fail();
+        rest = nullopt == sep
+        ? parseDefaultSeparator(val = nullopt, rest)
+        : parseString(*sep, val = nullopt, rest);
+        if(nullopt == val) return fail();
         
         // second number
-        rest = ::parseNum(rest, b, parsed);
-        if(b <= 1000) a += b;
+        int b;
+        rest = ::parseNum(b, rest);
+        if(b <= 1000) sum += b;
     }
 
-    return a;
+    return sum;
 }
