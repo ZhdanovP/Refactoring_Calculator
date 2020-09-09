@@ -6,7 +6,7 @@
 using namespace std;
 
 StringCalc::StringCalc()
-    : customDividerPrefix("//"), minValue(0), maxValue(1000) {}
+    : customDelimiterPrefix("//"), minValue(0), maxValue(1000) {}
 
 StringCalc::~StringCalc() {}
 
@@ -26,13 +26,13 @@ int StringCalc::Add(string numbers) {
 bool StringCalc::parseToOperands(string numbers) {
   bool result = true;
 
-  if (numbers.find(customDividerPrefix.c_str(),
+  if (numbers.find(customDelimiterPrefix.c_str(),
                    0,
-                   customDividerPrefix.length()) != string::npos) {
+                   customDelimiterPrefix.length()) != string::npos) {
     auto firstNewLine = numbers.find_first_of('\n') + 1;
-    char customDivider = numbers[customDividerPrefix.length()];
+    char customDelimiter = numbers[customDelimiterPrefix.length()];
     numbers.erase(0, firstNewLine);
-    std::replace(numbers.begin(), numbers.end(), customDivider, '\n');
+    std::replace(numbers.begin(), numbers.end(), customDelimiter, '\n');
   }
 
   if (numbers.find(','))

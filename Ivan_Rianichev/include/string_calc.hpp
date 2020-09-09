@@ -18,7 +18,7 @@ class StringCalc {
   bool isNumber(const std::string& operand);
 
   std::vector<int> operands;
-  const std::string customDividerPrefix;
+  const std::string customDelimiterPrefix;
   const int minValue;
   const int maxValue;
 };

@@ -56,13 +56,13 @@ TEST(CalculatorTest, FloatNumbersTest) {
   EXPECT_THROW({ c.Add("2.5,2.5"); }, std::invalid_argument);
 }
 
-TEST(CalculatorTest, TestForNewLineDivider) {
+TEST(CalculatorTest, TestForNewLineDelimiter) {
   StringCalc c;
   int actual = c.Add("2\n5");
   ASSERT_EQ(actual, 7);
 }
 
-TEST(CalculatorTest, TestForNewLineDivider2) {
+TEST(CalculatorTest, TestForNewLineDelimiter2) {
   StringCalc c;
   int actual = c.Add("20\n5,2");
   ASSERT_EQ(actual, 27);
@@ -74,13 +74,13 @@ TEST(CalculatorTest, OperandsOver1000Ignored) {
   ASSERT_EQ(actual, 2);
 }
 
-TEST(CalculatorTest, CustomOperandDivider) {
+TEST(CalculatorTest, CustomOperandDelimiter) {
   StringCalc c;
   int actual = c.Add("//;\n1;2");
   ASSERT_EQ(actual, 3);
 }
 
-TEST(CalculatorTest, CustomOperandDivider2) {
+TEST(CalculatorTest, CustomOperandDelimiter2) {
   StringCalc c;
   int actual = c.Add("//;\n1;2,3\n4");
   ASSERT_EQ(actual, 10);
