@@ -2,6 +2,8 @@
 #include "string_calc.hpp"
 #include <iostream>
 
+using namespace std;
+
 class CalculatorTest : public ::testing::Test {
   
 public:
@@ -17,11 +19,11 @@ TEST_F(CalculatorTest, TestSum) {
  }
 
 TEST_F(CalculatorTest, TestWrongArguments) {
-  EXPECT_EQ(-1, m_Calculator.Add("2,a3"));
+  EXPECT_THROW(m_Calculator.Add("19-4-"),invalid_argument);
  }
 
 TEST_F(CalculatorTest, TestCommaAsLast) {
-  EXPECT_EQ(23, m_Calculator.Add("19,4,"));
+  EXPECT_EQ(23, m_Calculator.Add("19,,4,"));
  }
 
 TEST_F(CalculatorTest, TestFourArguments) {
@@ -34,7 +36,8 @@ TEST_F(CalculatorTest, TestWithBothSeparators) {
 
 TEST_F(CalculatorTest, TestExpandedSeparators) {
   EXPECT_EQ(7750, m_Calculator.Add("//;*#&\n19\n4,2340;1037;4100#100*100&50"));
- }
+}
+
 
 // TEST(CalculatorTest, SampleTest) {
 // 	StringCalc c;

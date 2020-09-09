@@ -92,7 +92,7 @@ int StringCalc::Add(string numbers){
     setNumbers(numbers);
 
     if(hasWrongArguments()){
-             return -1;
+             throw std::invalid_argument("wrong argument");
         }
     
     unsigned int result = 0;
@@ -106,6 +106,7 @@ int StringCalc::Add(string numbers){
 
            //cout<<"m_CurPos = " << m_CurPos <<"m_EndPos="<< m_EndPos <<" : "<< sNumber <<endl;
 
+         if(sNumber.length())
            result += stoi(sNumber);
 
            m_CurPos = m_EndPos+1; 
