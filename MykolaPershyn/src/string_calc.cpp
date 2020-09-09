@@ -91,8 +91,8 @@ int StringCalc::Add(string numbers)
         if('[' == numbers[2]) {
             size_t pos = numbers.find("]\n");
             if(string::npos == pos) return fail();
-            sep = numbers.substr(3, pos + 1);
-            rest = numbers.substr(pos + 3);
+            sep = numbers.substr(3, pos - 3);
+            rest = numbers.substr(pos + 2);
         }
         else {
             sep = numbers.substr(2, 1);
