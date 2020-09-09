@@ -6,9 +6,6 @@
 using namespace std;
 
 namespace {
-    template<class A, class B>
-    inline const A& const_f(const A& a, const B&) {return a;}
-    
     constexpr bool isDigit(char c) {
         return '0' <= c && c <= '9';
     }
@@ -23,13 +20,13 @@ namespace {
 
     string parseDefaultSeparator(optional<string>& val, const string& input) {
         return ("\n" == input.substr(0, 1) || "," == input.substr(0, 1))
-        ? const_f(input.substr(1), val = input.substr(0, 1))
+        ? val = input.substr(0, 1), input.substr(1)
         : input;
     }
     
     string parseString(string s, optional<string>& val, const string& input) {
         return input.substr(0, s.size()) == s
-        ? const_f(input.substr(s.size()), val = input.substr(0, s.size()))
+        ? val = input.substr(0, s.size()), input.substr(s.size())
         : input;
     }
 };
