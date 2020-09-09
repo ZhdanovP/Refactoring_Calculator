@@ -119,6 +119,12 @@ TEST(CalculatorTest, GeneralisedSeparators) {
   ASSERT_EQ(actual, 3);
 }
 
+TEST(CalculatorTest, ArbitratyLengthSingleSeparator) {
+  StringCalc c;
+  int actual = c.Add("//[***]\n2***3");
+  ASSERT_EQ(actual, 5);
+}
+
 TEST(CalculatorTest, ArbitratyLengthSeparators) {
   StringCalc c;
   int actual = c.Add("//[***]\n***2***3");
