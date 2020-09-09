@@ -22,19 +22,44 @@ void StringCalc::setNumbers(std::string numbers){
 
 void StringCalc::updateSeparators(){
 
-    vector<char>().swap(separators);
+    separators.clear();
  
     if(m_Numbers.substr(0,2) == "//"){
 
        size_t endList = m_Numbers.find('\n',2);
 
-       if(endList!=std::string::npos){
+       if(endList != std::string::npos){
 
              size_t pos = 2;
 
+             bool waitingSeparatorEnd=false;
+             std::string separatorString;   
+
              while(pos < endList){
-                    
-                 separators.emplace_back(m_Numbers[pos++]); 
+                 
+                 if(waitingSeparatorEnd){
+
+                      if(m_Numbers[pos] != ']'){
+                          separatorString+=m_Numbers.substr(pos++,1);
+                      }
+                       else{
+                            separators.insert(separatorString);
+                            separatorString = "";
+                            pos++;
+                            waitingSeparatorEnd = false;
+                      } 
+           
+                   }
+                   else{
+
+                      if(m_Numbers[pos] == '['){
+                        waitingSeparatorEnd = true;
+                        pos++;
+                      }
+                      else{
+                       separators.insert(m_Numbers.substr(pos++,1)); 
+                      }
+                    }
             }
   
            endList++; 
@@ -42,17 +67,22 @@ void StringCalc::updateSeparators(){
         }
     }
     
-    separators.emplace_back(',');
-    separators.emplace_back('\n');
+    separators.insert(",");
+    separators.insert("\n");
+
+   /* for(auto separator: separators){
+          cout<<"separator="<<separator<<endl;
+    }*/
 }
 void StringCalc::dropState(){
      m_EndPos = 0;
      m_CurPos = 0;
+     m_Offs = 0;
 }
 
 void StringCalc::getEndOfTheNextNumber(){
 
-    size_t minEndPos = m_Numbers.length();
+    m_EndPos = m_Numbers.length();
     
 
     for(auto separator: separators){
@@ -64,12 +94,12 @@ void StringCalc::getEndOfTheNextNumber(){
                 endPos = m_Numbers.length();
               }          
            
-           if(endPos < minEndPos){  
-                minEndPos = endPos;
+           if(endPos < m_EndPos){  
+                m_EndPos = endPos;
+                m_Offs = separator.length();
               }
      }
 
-     m_EndPos = minEndPos;
 }
 
 
@@ -80,7 +110,11 @@ bool StringCalc::hasWrongArguments(){
     string wrongSymbs = std::regex_replace(m_Numbers,rgx,"");
 
     for(auto separator: separators){
-        wrongSymbs.erase(std::remove(wrongSymbs.begin(), wrongSymbs.end(), separator), wrongSymbs.end()); 
+      std::string::size_type pos = 0u;
+
+  while((pos = wrongSymbs.find(separator, pos)) != std::string::npos){
+      wrongSymbs.replace(pos, separator.length(), "");
+  }
     }
 
     return (wrongSymbs.length())?true:false;
@@ -105,15 +139,17 @@ int StringCalc::Add(string numbers){
            string sNumber = m_Numbers.substr(m_CurPos,m_EndPos - m_CurPos);
 
            //cout<<"m_CurPos = " << m_CurPos <<"m_EndPos="<< m_EndPos <<" : "<< sNumber <<endl;
+ 
+           if(!sNumber.length()){
+             throw std::invalid_argument("no number between separators");
+            }
 
-         if(sNumber.length()){
-
-            int currentNumber = stoi(sNumber);
+           int currentNumber = stoi(sNumber);
 
          if(currentNumber<1000)
             result += currentNumber;
-         }
-           m_CurPos = m_EndPos+1; 
+         
+           m_CurPos = m_EndPos+m_Offs; 
       }             
     
     return result;
