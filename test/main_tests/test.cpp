@@ -14,6 +14,10 @@ TEST_F(CalculatorTest, TestEmptyString) {
   EXPECT_EQ(0, m_Calculator.Add(""));
  }
 
+TEST_F(CalculatorTest, TestOne) {
+  EXPECT_EQ(1, m_Calculator.Add("1"));
+ }
+
 TEST_F(CalculatorTest, TestSum) {
   EXPECT_EQ(15, m_Calculator.Add("12,3"));
  }
