@@ -116,7 +116,7 @@ TEST(CalculatorTest, DifferentSeparators) {
 TEST(CalculatorTest, GeneralisedSeparators) {
   StringCalc c;
   int actual = c.Add("//;\n1;2");
-  ASSERT_EQ(actual, 2);
+  ASSERT_EQ(actual, 3);
 }
 
 TEST(CalculatorTest, ArbitratyLengthSeparators) {
