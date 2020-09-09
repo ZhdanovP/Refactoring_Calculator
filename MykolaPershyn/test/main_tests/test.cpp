@@ -89,6 +89,13 @@ TEST(CalculatorTest, MultiArg) {
   ASSERT_EQ(actual, 10);
 }
 
+TEST(CalculatorTest, MissingValuesAreZeros) {
+  StringCalc c;
+  int actual = c.Add("1,,2,,,,3,,4");
+  ASSERT_EQ(actual, 10);
+}
+
+
 TEST(CalculatorTest, SeparatorComa) {
   StringCalc c;
   int actual = c.Add("1,2");
