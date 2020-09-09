@@ -103,3 +103,22 @@ StringCalc c;
 int actual = c.Add("3214,243,");
 ASSERT_EQ(actual, 3457);
 }
+
+TEST(CalculatorTest, SampleTest_17) {
+StringCalc c;
+int actual = c.Add("3214,243\n3421");
+ASSERT_EQ(actual, 6878);
+}
+
+
+TEST(CalculatorTest, SampleTest_18) {
+StringCalc c;
+int actual = c.Add(",,\n,\n,,");
+ASSERT_EQ(actual, 0);
+}
+
+TEST(CalculatorTest, SampleTest_19) {
+StringCalc c;
+int actual = c.Add("3214\n243\n");
+ASSERT_EQ(actual, 3457);
+}
