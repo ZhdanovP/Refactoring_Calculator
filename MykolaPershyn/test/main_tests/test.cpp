@@ -137,3 +137,27 @@ TEST(CalculatorTest, ArbitratyLengthSeparators) {
   int actual = c.Add("//[***]\n***2***3");
   ASSERT_EQ(actual, 5);
 }
+
+TEST(CalculatorTest, SkipMoreThan1000FirstArg) {
+  StringCalc c;
+  int actual = c.Add("1001,1,2,3,4");
+  ASSERT_EQ(actual, 10);
+}
+
+TEST(CalculatorTest, SkipMoreThan1000MiddleArg) {
+  StringCalc c;
+  int actual = c.Add("1,1001,2,3,4");
+  ASSERT_EQ(actual, 10);
+}
+
+TEST(CalculatorTest, SkipMoreThan1000LastArg) {
+  StringCalc c;
+  int actual = c.Add("1,2,3,4,1001");
+  ASSERT_EQ(actual, 10);
+}
+
+TEST(CalculatorTest, Keep1000) {
+  StringCalc c;
+  int actual = c.Add("1,2,1000,3,4");
+  ASSERT_EQ(actual, 1010);
+}
