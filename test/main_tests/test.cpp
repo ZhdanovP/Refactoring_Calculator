@@ -27,15 +27,15 @@ TEST_F(CalculatorTest, TestCommaAsLast) {
  }
 
 TEST_F(CalculatorTest, TestFourArguments) {
-  EXPECT_EQ(3400, m_Calculator.Add("19,4,2340,1037"));
+  EXPECT_EQ(25, m_Calculator.Add("19,6,2340,1037"));
  }
 
 TEST_F(CalculatorTest, TestWithBothSeparators) {
-  EXPECT_EQ(7500, m_Calculator.Add("19\n4,2340\n1037,4100"));
+  EXPECT_EQ(123, m_Calculator.Add("119\n4,2340\n1037,4100"));
  }
 
 TEST_F(CalculatorTest, TestExpandedSeparators) {
-  EXPECT_EQ(7750, m_Calculator.Add("//;*#&\n19\n4,2340;1037;4100#100*100&50"));
+  EXPECT_EQ(273, m_Calculator.Add("//;*#&\n19\n4,2340;1037;4100#100*100&50"));
 }
 
 

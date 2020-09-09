@@ -106,9 +106,13 @@ int StringCalc::Add(string numbers){
 
            //cout<<"m_CurPos = " << m_CurPos <<"m_EndPos="<< m_EndPos <<" : "<< sNumber <<endl;
 
-         if(sNumber.length())
-           result += stoi(sNumber);
+         if(sNumber.length()){
 
+            int currentNumber = stoi(sNumber);
+
+         if(currentNumber<1000)
+            result += currentNumber;
+         }
            m_CurPos = m_EndPos+1; 
       }             
     
