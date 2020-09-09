@@ -102,6 +102,7 @@ int StringCalc::Add(string numbers)
     }
     // first number
     rest = ::parseNum(rest, a, parsed);
+    if(a > 1000) a = 0;
     
     while("" != rest) {
         // separator
@@ -110,7 +111,7 @@ int StringCalc::Add(string numbers)
         
         // second number
         rest = ::parseNum(rest, b, parsed);
-        a += b;
+        if(b <= 1000) a += b;
     }
 
     return a;
