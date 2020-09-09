@@ -19,12 +19,21 @@ StringCalc::~StringCalc()
 int StringCalc::Add(string numbers)
 {
     int result = 0;
-    static const std::set<char> delimiters = {',', '\n'};
+    std::set<char> delimiters = {',', '\n'};
     size_t len = numbers.size();
     if (len > 0)
     {
+        size_t start = 0;
+        if (len > 3)
+        {
+            if (numbers[0] == '/' && numbers[1] == '/' && numbers[3] == '\n')
+            {
+                delimiters.insert(numbers[2]);
+                start = 4;
+            }
+        }
         int curr = 0;
-        for(int i = 0; i < len; ++i)
+        for(int i = start; i < len; ++i)
         {
             if ((numbers[i] >= '0')  && (numbers[i] <= '9'))
                 curr = curr*10 + (numbers[i] - '0');

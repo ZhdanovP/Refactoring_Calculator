@@ -122,3 +122,22 @@ StringCalc c;
 int actual = c.Add("3214\n243\n");
 ASSERT_EQ(actual, 3457);
 }
+
+TEST(CalculatorTest, SampleTest_20) {
+StringCalc c;
+int actual = c.Add("//;\n3214;243;3421");
+ASSERT_EQ(actual, 6878);
+}
+
+
+TEST(CalculatorTest, SampleTest_21) {
+StringCalc c;
+int actual = c.Add(",;,\n,\n,,");
+ASSERT_EQ(actual, -1);
+}
+
+TEST(CalculatorTest, SampleTest_22) {
+StringCalc c;
+int actual = c.Add("//;\n3214\n243,2;5");
+ASSERT_EQ(actual, 3464);
+}
