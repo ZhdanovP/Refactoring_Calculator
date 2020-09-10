@@ -15,12 +15,15 @@ class StringCalc {
 
  private:
   bool parseToOperands(std::string numbers);
+  void parseDelimiter(std::string& numbers);
   bool isNumber(const std::string& operand);
 
   std::vector<int> operands;
   const std::string customDelimiterPrefix;
   const int minValue;
   const int maxValue;
+  const char coma;
+  const char newLine;
 };
 
 #endif
