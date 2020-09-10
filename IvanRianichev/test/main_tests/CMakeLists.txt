@@ -3,7 +3,7 @@ file(GLOB SRCS *.cpp)
 ADD_EXECUTABLE(main_tests ${SRCS})
 
 TARGET_LINK_LIBRARIES(main_tests 
-	libcalculator     
+	libmonopoly     
 	libgtest
     libgmock)
 

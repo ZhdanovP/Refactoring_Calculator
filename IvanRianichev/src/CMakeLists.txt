@@ -1,8 +1,8 @@
-project(calculator)
+project(monopoly)
 
 set(SRC
 	main.cpp
-	string_calc.cpp
+	monolopy.cpp
 )
 
 add_executable(${PROJECT_NAME}
