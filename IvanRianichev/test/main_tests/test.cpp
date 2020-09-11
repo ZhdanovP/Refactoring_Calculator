@@ -3,11 +3,18 @@
 
 using namespace ::std;
 using namespace ::Game;
+class MonopolyTest : public testing::Test {
+ public:
+  void SetUp() override {
+    players.insert(players.begin(),
+                   {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
+  }
+  void TearDown() override {}
 
-TEST(LAB2, GetPlayersListReturnCorrectList) {
-  vector<Player> players(
-      {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
+  vector<Player> players;
+};
 
+TEST_F(MonopolyTest, GetPlayersListReturnCorrectList) {
   Monopoly monopoly(players);
 
   vector<Player>* x = monopoly.GetPlayers();
@@ -18,7 +25,7 @@ TEST(LAB2, GetPlayersListReturnCorrectList) {
   }
   ASSERT_EQ(i, players.size());
 }
-TEST(LAB2, GetFieldsListReturnCorrectList) {
+TEST_F(MonopolyTest, GetFieldsListReturnCorrectList) {
   vector<Field> expectedCompanies({Field("Ford", Field::AUTO, 0, false),
                                    Field("MCDonald", Field::FOOD, 0, false),
                                    Field("Lamoda", Field::CLOTHER, 0, false),
@@ -27,8 +34,6 @@ TEST(LAB2, GetFieldsListReturnCorrectList) {
                                    Field("Prison", Field::PRISON, 0, false),
                                    Field("MCDonald", Field::FOOD, 0, false),
                                    Field("TESLA", Field::AUTO, 0, false)});
-  vector<Player> players(
-      {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
 
   Monopoly monopoly(players);
   auto actualCompanies = monopoly.GetFields();
@@ -39,10 +44,7 @@ TEST(LAB2, GetFieldsListReturnCorrectList) {
   ASSERT_TRUE(i);
 }
 
-TEST(LAB2, PlayerBuyNoOwnedCompanies) {
-  vector<Player> players(
-      {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
-
+TEST_F(MonopolyTest, PlayerBuyNoOwnedCompanies) {
   Monopoly monopoly(players);
   auto x = monopoly.GetFieldByName("Ford");
   monopoly.Buy(1, x);
@@ -53,9 +55,7 @@ TEST(LAB2, PlayerBuyNoOwnedCompanies) {
   ASSERT_TRUE(x.getNumber() != 0);
 }
 
-TEST(LAB2, RentaShouldBeCorrectTransferMoney) {
-  vector<Player> players(
-      {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
+TEST_F(MonopolyTest, RentaShouldBeCorrectTransferMoney) {
   Monopoly monopoly(players);
   auto x = monopoly.GetFieldByName("Ford");
   monopoly.Buy(1, x);
@@ -67,9 +67,4 @@ TEST(LAB2, RentaShouldBeCorrectTransferMoney) {
 
   auto player2 = monopoly.GetPlayerInfo(2);
   ASSERT_EQ(player2.getMoney(), 5750);
-}
-
-bool operator==(Field& a, Field& b) {
-  return a.getName() == b.getName() && a.getType() == b.getType() &&
-         a.getNumber() == b.getNumber() && a.isOccupied() == b.isOccupied();
 }
