@@ -4,10 +4,17 @@
 #include <list>
 #include <tuple>
 #include <string>
+#include <vector>
+#include <optional>
 
 class Monopoly
 {
 public:
+    struct Player {
+        std::string name;
+        int money;
+    };
+
 	enum Type
 	{
 		AUTO,
@@ -17,15 +24,37 @@ public:
 		PRISON,
 		BANK
 	};
-	Monopoly(std::string names[10],int);
-	std::list<std::tuple<std::string,int>> *	GetPlayersList();
-	std::list<std::tuple<std::string, Type, int,bool>> * GetFieldsList();
-	std::list<std::tuple<std::string, Type, int, bool>> Fields;
-	std::list<std::tuple<std::string, int>> Players;
-	std::tuple<std::string, int>  GetPlayerInfo(int);	 
-	bool Buy(int p,std::tuple<std::string, Type, int, bool>);
-	std::tuple<std::string, Type, int, bool> GetFieldByName(std::string);	
-	bool Renta(int p, std::tuple<std::string, Type, int, bool>c);
+    
+    constexpr std::optional<int> price(Type t) {
+        switch(t) {
+            case AUTO: return 500;
+            case FOOD: return 250;
+            case TRAVEL: return 700;
+            case CLOTHER: return 100;
+//             case PRISON: return 1100;
+//             case BANK: return 700;
+            default: return {};
+        }
+    }
+
+    struct field_t {
+        std::string name;
+        Type type;
+        int owner;
+    };
+
+    [[deprecated("Use Monopoly(std::initializer_list<const char*>& names); instead.")]]
+    Monopoly(std::string names[10],int);
+    Monopoly(std::initializer_list<const char*>& names);
+
+    std::list<Player> *	GetPlayersList();
+	std::list<field_t> * GetFieldsList();
+	std::list<field_t> Fields;
+	std::list<Player> Players;
+	Player  GetPlayerInfo(int);	 
+	bool Buy(int p, field_t);
+	field_t GetFieldByName(std::string) const;	
+	bool Renta(int p, field_t c);
 	
 };
 

@@ -3,136 +3,110 @@
 
 using namespace ::std;
 
-Monopoly::Monopoly(string names[10],int countPlaers)
+Monopoly::Monopoly(string names[10], int countPlaers)
 {
 	for (int i = 0; i < countPlaers; i++)
 	{
-		Players.push_back(make_tuple(names[i], 6000));
+		Players.push_back({names[i], 6000});
 	}
-	Fields.push_back(make_tuple("Ford", Monopoly::AUTO, 0, false));
-	Fields.push_back(make_tuple("MCDonald", Monopoly::FOOD, 0, false));
-	Fields.push_back(make_tuple("Lamoda", Monopoly::CLOTHER, 0, false));
-	Fields.push_back(make_tuple("Air Baltic", Monopoly::TRAVEL, 0, false));
-	Fields.push_back(make_tuple("Nordavia", Monopoly::TRAVEL, 0, false));
-	Fields.push_back(make_tuple("Prison", Monopoly::PRISON, 0, false));
-	Fields.push_back(make_tuple("MCDonald", Monopoly::FOOD, 0, false));
-	Fields.push_back(make_tuple("TESLA", Monopoly::AUTO, 0, false));
+	Fields.push_back({"Ford", Monopoly::AUTO, 0});
+	Fields.push_back({"MCDonald", Monopoly::FOOD, 0});
+	Fields.push_back({"Lamoda", Monopoly::CLOTHER, 0});
+	Fields.push_back({"Air Baltic", Monopoly::TRAVEL, 0});
+	Fields.push_back({"Nordavia", Monopoly::TRAVEL, 0});
+	Fields.push_back({"Prison", Monopoly::PRISON, 0});
+	Fields.push_back({"MCDonald", Monopoly::FOOD, 0});
+	Fields.push_back({"TESLA", Monopoly::AUTO, 0});
 }
 
-std::list<std::tuple<std::string, int>> * Monopoly::GetPlayersList()
+Monopoly::Monopoly(std::initializer_list<const char*>& names)
+{
+    
+	for (string n : names) Players.push_back({n, 6000});
+	Fields.push_back({"Ford", Monopoly::AUTO, 0});
+	Fields.push_back({"MCDonald", Monopoly::FOOD, 0});
+	Fields.push_back({"Lamoda", Monopoly::CLOTHER, 0});
+	Fields.push_back({"Air Baltic", Monopoly::TRAVEL, 0});
+	Fields.push_back({"Nordavia", Monopoly::TRAVEL, 0});
+	Fields.push_back({"Prison", Monopoly::PRISON, 0});
+	Fields.push_back({"MCDonald", Monopoly::FOOD, 0});
+	Fields.push_back({"TESLA", Monopoly::AUTO, 0});
+}
+
+std::list<Monopoly::Player> * Monopoly::GetPlayersList()
 {
 	return &Players;
 }
 
-std::list<std::tuple<std::string, Monopoly::Type,int,bool>> * Monopoly::GetFieldsList()
+std::list<Monopoly::field_t> * Monopoly::GetFieldsList()
 {
 	return &Fields;
 }
 
-std::tuple<std::string, int> Monopoly::GetPlayerInfo(int m)
+Monopoly::Player Monopoly::GetPlayerInfo(int m)
 {
-	list<std::tuple<std::string, int>>::iterator i = Players.begin();
+	auto i = Players.begin();
 	advance(i, m - 1);
 	return *i;
 }
 
-bool Monopoly::Buy(int z, std::tuple<std::string, Type, int, bool> k)
+bool Monopoly::Buy(int z, field_t k)
 {
 	auto x = GetPlayerInfo(z);
-	tuple<string, int> p;
-	list<tuple<std::string, Type, int, bool>>::iterator i;
-	list<tuple<string, int>>::iterator j = Players.begin();
-	switch (get<1>(k))
-	{
-	case AUTO:
-		if (get<2>(k))
-			return false;
-		p = make_tuple(get<0>(x), get<1>(x) - 500);
-		k = make_tuple(get<0>(k), get<1>(k), z, get<2>(k));
-		break;
-	case FOOD:
-		if (get<2>(k))
-			return false;
-		p = make_tuple(get<0>(x), get<1>(x) - 250);
-		k = make_tuple(get<0>(k), get<1>(k), z, get<2>(k));
-		break;
-	case TRAVEL:
-		if (get<2>(k))
-			return false;
-		p = make_tuple(get<0>(x), get<1>(x) - 700);
-		k = make_tuple(get<0>(k), get<1>(k), z, get<2>(k));
-		break;
-	case CLOTHER:
-		if (get<2>(k))
-			return false;
-		p = make_tuple(get<0>(x), get<1>(x) - 100);
-		k = make_tuple(get<0>(k), get<1>(k), z, get<2>(k));
-		break;
-	default:
+	Player p;
+	list<field_t>::iterator i;
+	auto j = Players.begin();
+	if (k.owner)
 		return false;
-	};
-	i = find_if(Fields.begin(), Fields.end(), [k](auto x) { return get<0>(x) == get<0>(k); });
+    if(nullopt == price(k.type)) return false;
+    p = {x.name, x.money - *price(k.type)};
+	k.owner = z;
+	i = find_if(Fields.begin(), Fields.end(), [k](auto x) { return x.name == k.name; });
 	*i = k;
     advance(j, z-1);
 	*j = p;
 	return true;
 }
 
-std::tuple<std::string, Monopoly::Type, int, bool>  Monopoly::GetFieldByName(std::string l)
+Monopoly::field_t  Monopoly::GetFieldByName(const std::string l) const
 {
-	std::list<std::tuple<std::string, Monopoly::Type, int, bool>>::iterator i = find_if(Fields.begin(), Fields.end(),[l] (std::tuple<std::string, Monopoly::Type, int, bool> x) {
-		return get<0>(x) == l;
-	});
+    auto compareL = [l] (field_t x) {
+		return x.name == l;
+	};
+	auto i = find_if(Fields.cbegin(), Fields.cend(), compareL);
 	return *i;
 }
 
-bool Monopoly::Renta(int m, std::tuple<std::string, Type, int, bool> c)
+bool Monopoly::Renta(int m, field_t c)
 {
-	tuple<string, int> z = GetPlayerInfo(m);
-	tuple<string, int> o;
+	auto z = GetPlayerInfo(m);
+	Player o;
+    
+    if(nullopt == price(c.type)) {
+        switch (c.type)
+        {
+        case PRISON:
+            z.money -= 11000;
+            break;
+        case BANK:
+            z.money -= 700;
+            break;
+        default:
+            return false;
+        }
+    }
+    else {
+		if (!(c.owner))
+			return false;
+		o = GetPlayerInfo(c.owner);
+		o.money += 250;
+		z.money -= 250;
+    }
 
-	switch (get<1>(c))
-	{
-	case AUTO:
-		if (!get<2>(c))
-			return false;
-		o = GetPlayerInfo(get<2>(c));
-		o = make_tuple(get<0>(o), get<1>(o) + 250);
-		z = make_tuple(get<0>(z), get<1>(z) - 250);
-		break;
-	case FOOD:
-		if (!get<2>(c))
-			return false;
-	case TRAVEL:
-		if (!get<2>(c))
-			return false;
-		o = GetPlayerInfo(get<2>(c));
-		o = make_tuple(get<0>(o), get<1>(o) + 250);
-		z = make_tuple(get<0>(z), get<1>(z) - 250);
-		break;
-	case CLOTHER:
-		if (!get<2>(c))
-			return false;
-		o = GetPlayerInfo(get<2>(c));
-		o = make_tuple(get<0>(o), get<1>(o) + 250);
-		z = make_tuple(get<0>(z), get<1>(z) - 250);
-		break;
-	case PRISON:
-		z = make_tuple(get<0>(z), get<1>(z) - 1000);
-		break;
-	case BANK:
-		z = make_tuple(get<0>(z), get<1>(z) - 700);
-		break;
-	default:
-		return false;
-	}
-	list<tuple<string, int>>::iterator i = Players.begin();
+	auto i = Players.begin();
 	advance(i, m - 1);
 	*i = z;
-	i = find_if(Players.begin(), Players.end(), [o](auto x) { return get<0>(x) == get<0>(o); });
+	i = find_if(Players.begin(), Players.end(), [o](auto x) { return x.name == o.name; });
 	*i = o;
 	return true;
 }
-
-
-
