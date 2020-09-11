@@ -1,8 +1,6 @@
 #include "monolopy.hpp"
 #include <algorithm>
 
-using namespace ::std;
-
 bool
 operator==(Field const& lhs, Field const& rhs)
 {
@@ -45,7 +43,7 @@ auto constexpr fieldRentPrice = [](auto const& rentedField) {
 
 }  // namespace
 
-Monopoly::Monopoly(std::vector<string> const& names)
+Monopoly::Monopoly(std::vector<std::string> const& names)
   : mFields{{"Ford", Industry::AUTO},
             {"MCDonald", Industry::FOOD},
             {"Lamoda", Industry::CLOTHER},
