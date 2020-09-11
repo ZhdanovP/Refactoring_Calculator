@@ -64,10 +64,10 @@ int main(int argc, char** argv) {
     setlocale(LC_ALL, "Russian");
     do {
         cout << "Введите имя первого игрока : ";
-        gets_s(PlayerName1,80);
+        fgets(PlayerName1, 80, stdin);
 
         cout << "Введите имя второго игрока: ";
-        gets_s(PlayerName2,80);
+        fgets(PlayerName2, 80, stdin);
         cout << "\n";
     } while (!strcmp(PlayerName1, PlayerName2));
     
