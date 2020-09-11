@@ -80,18 +80,16 @@ Monopoly::FieldsList() const
 Player
 Monopoly::PlayerInfo(size_t const playerNumber) const
 {
-    try {
-        return mPlayers.at(playerNumber);
-    }
-    catch (std::out_of_range const& ex) {
-        return {};
-    }
+    return playerNumber <= mPlayers.size() ? mPlayers.at(playerNumber) : Player{};
 }
 
 bool
 Monopoly::Buy(size_t const player, Field const& purchasedField)
 {
     if (purchasedField.owner.has_value()) {
+        return false;
+    }
+    if (player > mPlayers.size()) {
         return false;
     }
     auto fieldIterator = find_if(
@@ -106,14 +104,8 @@ Monopoly::Buy(size_t const player, Field const& purchasedField)
         return false;
     }
 
-    try {
-        mPlayers.at(player).money -= price;
-    }
-    catch (std::out_of_range const& ex) {
-        return false;
-    }
-
-    (*fieldIterator).owner = player;
+    mPlayers.at(player).money -= price;
+    fieldIterator->owner = player;
 
     return true;
 }
@@ -140,13 +132,13 @@ Monopoly::Renta(size_t const renter, Field const& rentedField)
         return false;
     }
 
-    try {
-        mPlayers.at(renter).money -= price;
-        mPlayers.at(*rentedField.owner).money += price;
-    }
-    catch (std::out_of_range const& ex) {
+    if (renter > mPlayers.size() || *rentedField.owner > mPlayers.size()) {
         return false;
     }
 
+    mPlayers.at(renter).money -= price;
+    mPlayers.at(*rentedField.owner).money += price;
+
     return true;
 }
+
