@@ -11,15 +11,18 @@ class NumbersProvider
      NumbersProvider(std::string numbers);
      
      bool hasNextNumber();
-     std::string getEndOfTheNextNumber();
+     int getNextNumber();
    
    private:
-   	   void prepareNumbers();
+   	   void parseNumbers();
    	   void parseSeparators();
+   	   bool getOneSymbSep();
+   	   void getManySymbSep();
+   	   void replaceSeparators();
 
        std::string m_Numbers;
        std::set<std::string> separators;
-       std::vector<std::string> m_OutNumbers;
+       std::vector<int> m_OutNumbers;
 
        size_t m_CurPos = 0;
 

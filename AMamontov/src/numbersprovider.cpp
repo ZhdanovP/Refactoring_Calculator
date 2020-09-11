@@ -4,129 +4,105 @@
 #include <iostream>
 #include <cctype>
 #include <functional>
+#include <regex>
 
 using namespace std;
 
 NumbersProvider::NumbersProvider(std::string numbers):m_Numbers(numbers)
 {
     parseSeparators();
-    prepareNumbers();
+    parseNumbers();
 }
 
+bool NumbersProvider::hasNextNumber() {
 
-bool NumbersProvider::hasNextNumber() 
-{
     return m_CurPos<m_OutNumbers.size();
 }
 
-void NumbersProvider::prepareNumbers(){
- 
-     string number;
-     string separator; 
-
-     for (auto symb : m_Numbers){
-
-         if(isdigit(symb)){
-
-             number += string(1,symb);
-
-          }
-         else{
-
-             separator += string(1,symb);
-             
-             std::function<bool(const string &)> func = [separator]( const string &curSeporator ) -> bool
-             {
-                 if(separator.length()>curSeporator.length()){
-                 	return false;
-                 } 
-
-                 return  ( curSeporator.find(separator) ==0 )?true:false;    
-             };
-
-             set<string>::iterator separatorExistence =  find_if(separators.begin(),separators.end(),func); 
-
-            if(separatorExistence!=separators.end()){
-
-            if((*separatorExistence)==separator){
-
-                 if(number.length()){
-                    m_OutNumbers.emplace_back(number); 
-                    number="";    
-                 }
-
-                 separator = "";
-                }
-
-             }
-             else{
-             	throw invalid_argument("illegal symbol");
-             } 
- 
-         }
-
-     }
-
-      if(number.length()){
-             
-             m_OutNumbers.emplace_back(number);
-      }
-     
-}
-
-std::string NumbersProvider::getEndOfTheNextNumber(){
+int NumbersProvider::getNextNumber(){
 
       return m_OutNumbers[m_CurPos++];
 }
 
-void NumbersProvider::parseSeparators(){
+void NumbersProvider::replaceSeparators(){
+ 
+    for(auto separator: separators){
 
-    separators.clear();
+     std::string::size_type pos = m_CurPos;
 
-    if(m_Numbers.substr(0,2) == "//"){
-
-       size_t endList = m_Numbers.find('\n',2);
-
-       if(endList != std::string::npos){
-
-             size_t pos = 2;
-
-             bool waitingSeparatorEnd=false;
-             std::string separatorString;   
-
-             while(pos < endList){
-                 
-                 if(waitingSeparatorEnd){
-
-                      if(m_Numbers[pos] != ']'){
-                          separatorString+=m_Numbers.substr(pos++,1);
-                      }
-                       else{
-                            separators.insert(separatorString);
-                            separatorString = "";
-                            pos++;
-                            waitingSeparatorEnd = false;
-                      } 
-           
-                   }
-                   else{
-
-                      if(m_Numbers[pos] == '['){
-                        waitingSeparatorEnd = true;
-                        pos++;
-                      }
-                      else{
-                       separators.insert(m_Numbers.substr(pos++,1)); 
-                      }
-                    }
-            }
-  
-           endList++; 
-           m_Numbers  = m_Numbers.substr(endList, m_Numbers.length() - endList );
-        }
+     while((pos = m_Numbers.find(separator, pos)) != std::string::npos){
+     m_Numbers.replace(pos, separator.length()," ");
+     pos+=separator.length();
+       }
+        
     }
-    
-    separators.insert(",");
-    separators.insert("\n");
+}
 
+void NumbersProvider::parseNumbers(){
+	  
+	  replaceSeparators();
+      
+      size_t curPos=0;
+
+      while(m_CurPos<m_Numbers.length()){
+
+          curPos = m_Numbers.find(' ',m_CurPos); 
+
+          if(curPos == string::npos){
+              curPos =  m_Numbers.length();              
+          } 
+
+        string number =  m_Numbers.substr(m_CurPos,curPos-m_CurPos);
+        
+        if(!regex_replace(number,regex("[0-9]"),"").length()){
+           m_OutNumbers.emplace_back(stoi(number)); 
+        }
+         else{
+           throw invalid_argument("wrong number value");
+        }   
+
+         m_CurPos = ++curPos; 
+      }
+
+      m_CurPos=0;
+}
+
+bool NumbersProvider::getOneSymbSep(){
+
+   if(m_Numbers[m_CurPos]!='['){
+        	separators.insert(string(1,m_Numbers[m_CurPos]));
+        	m_CurPos++;
+        	return true; 
+        }
+
+   return false;
+}
+
+void NumbersProvider::getManySymbSep(){
+
+	   size_t posClosed;
+
+        if(( posClosed = m_Numbers.find(']',++m_CurPos))!=string::npos){
+              separators.insert(m_Numbers.substr(m_CurPos,posClosed-m_CurPos));                
+                m_CurPos = ++posClosed;
+        }
+         else
+           throw invalid_argument("wrong separator"); 
+
+}
+
+void NumbersProvider::parseSeparators(){
+ 
+   separators.insert(",");
+   separators.insert("\n");
+
+   if(m_Numbers.substr(0,2)!="//")return;
+   size_t m_CurPos = 2;
+   while(m_Numbers[m_CurPos]!='\n'){
+        
+        if(!getOneSymbSep()){
+        	  getManySymbSep();
+        }
+   }
+    m_CurPos++;  
 }

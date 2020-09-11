@@ -11,10 +11,8 @@ int StringCalc::Add(string numbers){
         
       while(mumbersProvider.hasNextNumber()){
         
-           string sNumber=mumbersProvider.getEndOfTheNextNumber();
-
-           int currentNumber = stoi(sNumber);
-
+           int currentNumber=mumbersProvider.getNextNumber();
+                  
            if(currentNumber<1000){
               result += currentNumber;
            }

@@ -23,7 +23,7 @@ TEST_F(CalculatorTest, TestSum) {
  }
 
 TEST_F(CalculatorTest, TestWrongArguments) {
-  EXPECT_THROW(m_Calculator.Add("19-4-"),invalid_argument);
+  EXPECT_THROW(m_Calculator.Add("19,a4"),invalid_argument);
  }
 
 TEST_F(CalculatorTest, TestCommaAsLast) {
@@ -43,7 +43,7 @@ TEST_F(CalculatorTest, TestExpandedSeparators) {
 }
 
 TEST_F(CalculatorTest, TestLongSeparator) {
-  EXPECT_EQ(34, m_Calculator.Add("//[***]&\n10\n5,5***10&4"));
+  EXPECT_EQ(34, m_Calculator.Add("//[***][&]\n10\n5,5***10&4"));
 } 
 
 
