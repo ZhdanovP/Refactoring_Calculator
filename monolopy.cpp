@@ -13,13 +13,13 @@ namespace {
 
 auto constexpr fieldPurchasePrice = [](auto const& purchasedField) {
     switch (purchasedField.type) {
-    case AUTO:
+    case Industry::AUTO:
         return 500;
-    case FOOD:
+    case Industry::FOOD:
         return 250;
-    case TRAVEL:
+    case Industry::TRAVEL:
         return 700;
-    case CLOTHER:
+    case Industry::CLOTHER:
         return 100;
     default:
         return 0;
@@ -28,15 +28,15 @@ auto constexpr fieldPurchasePrice = [](auto const& purchasedField) {
 
 auto constexpr fieldRentPrice = [](auto const& rentedField) {
     switch (rentedField.type) {
-    case AUTO:
+    case Industry::AUTO:
         return 250;
-    case TRAVEL:
+    case Industry::TRAVEL:
         return 250;
-    case CLOTHER:
+    case Industry::CLOTHER:
         return 250;
-    case PRISON:
+    case Industry::PRISON:
         return 1000;
-    case BANK:
+    case Industry::BANK:
         return 700;
     default:
         return 0;
@@ -66,19 +66,19 @@ Monopoly::Monopoly(std::vector<string> const& names)
 }
 
 std::vector<Player>
-Monopoly::PlayersList()
+Monopoly::PlayersList() const
 {
     return mPlayers;
 }
 
 std::vector<Field>
-Monopoly::FieldsList()
+Monopoly::FieldsList() const
 {
     return mFields;
 }
 
 Player
-Monopoly::PlayerInfo(size_t const playerNumber)
+Monopoly::PlayerInfo(size_t const playerNumber) const
 {
     try {
         return mPlayers.at(playerNumber);
@@ -119,7 +119,7 @@ Monopoly::Buy(size_t const player, Field const& purchasedField)
 }
 
 Field
-Monopoly::FieldByName(std::string const& fieldName)
+Monopoly::FieldByName(std::string const& fieldName) const
 {
     for (auto const& field : mFields) {
         if (field.company == fieldName) {

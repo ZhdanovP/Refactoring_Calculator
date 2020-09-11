@@ -6,7 +6,7 @@
 #include <tuple>
 #include <vector>
 
-enum Industry { AUTO, FOOD, TRAVEL, CLOTHER, PRISON, BANK };
+enum class Industry { AUTO, FOOD, TRAVEL, CLOTHER, PRISON, BANK };
 
 struct Field {
     std::string const     company;
@@ -27,10 +27,10 @@ class Monopoly {
 public:
     Monopoly(std::vector<std::string> const& names);
 
-    std::vector<Player> PlayersList();
-    std::vector<Field>  FieldsList();
-    Player              PlayerInfo(size_t const playerNumber);
-    Field               FieldByName(const std::string& fieldName);
+    std::vector<Player> PlayersList() const;
+    std::vector<Field>  FieldsList() const;
+    Player              PlayerInfo(size_t const playerNumber) const;
+    Field               FieldByName(const std::string& fieldName) const;
 
     bool Buy(size_t const player, Field const& purchasedField);
     bool Renta(size_t const renter, Field const& rentedField);
