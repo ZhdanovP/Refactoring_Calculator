@@ -78,7 +78,7 @@ Monopoly::FieldsList() const
 Player
 Monopoly::PlayerInfo(size_t const playerNumber) const
 {
-    return playerNumber <= mPlayers.size() ? mPlayers.at(playerNumber) : Player{};
+    return playerNumber < mPlayers.size() ? mPlayers.at(playerNumber) : Player{};
 }
 
 bool
@@ -87,7 +87,7 @@ Monopoly::Buy(size_t const player, Field const& purchasedField)
     if (purchasedField.owner.has_value()) {
         return false;
     }
-    if (player > mPlayers.size()) {
+    if (player >= mPlayers.size()) {
         return false;
     }
     auto fieldIterator = find_if(
@@ -130,7 +130,7 @@ Monopoly::Renta(size_t const renter, Field const& rentedField)
         return false;
     }
 
-    if (renter > mPlayers.size() || *rentedField.owner > mPlayers.size()) {
+    if (renter >= mPlayers.size() || *rentedField.owner >= mPlayers.size()) {
         return false;
     }
 
