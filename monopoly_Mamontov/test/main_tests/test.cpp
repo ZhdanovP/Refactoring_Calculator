@@ -1,4 +1,12 @@
+#include "gtest/gtest.h"
+#define private public
+#define protected public
+ 
+#include "player.hpp"
+#include "fields.hpp"
 #include "monolopy.hpp"
+#include <set>
+
 
 using namespace ::std;
 
@@ -7,35 +15,56 @@ TEST(LAB2, GetPlayersListReturnCorrectList) {
    
     Monopoly monopoly(players,3);
 
-    list<tuple<string,int>>* x = monopoly.GetPlayersList();
     int i = 0;
-    for (auto c : *x) {
-        ASSERT_STREQ(get<0>(c).c_str(), players[i++].c_str());
-        ASSERT_EQ(get<1>(c), 6000);
+    for (const auto & [ namePlayer, player ]: monopoly.Players) {
+        ASSERT_EQ(player->m_AccountReminder,6000);
+        find_if(&players[0],&players[3], [namePlayer,&i](string val ){  if(val == namePlayer){ i++; return true;}  return false; });
     }
-    ASSERT_TRUE(i);
-}
-TEST(LAB2, GetFieldsListReturnCorrectList) {
-    tuple<string, Monopoly::Type,int,bool> expectedCompanies[]{
-        make_tuple("Ford",Monopoly::AUTO ,0,false),
-        make_tuple("MCDonald",Monopoly::FOOD,0,false),
-        make_tuple("Lamoda",Monopoly::CLOTHER,0,false),
-        make_tuple("Air Baltic",Monopoly::TRAVEL,0,false),
-        make_tuple("Nordavia",Monopoly::TRAVEL,0,false),
-        make_tuple("Prison",Monopoly::PRISON,0,false),
-        make_tuple("MCDonald",Monopoly::FOOD,0,false),
-        make_tuple("TESLA",Monopoly::AUTO,0,false)
-    };
-    string players[]{ "Peter","Ekaterina","Alexander" };
 
+    ASSERT_EQ(i,3);
+}
+
+TEST(LAB2, GetFieldsListReturnCorrectList) {
+            
+      
+std::unordered_map<std::string,std::shared_ptr<Field>> Fields ={
+     {"TESLA",std::make_shared<Auto>()},
+     {"Ford", std::make_shared<Auto>()},
+     {"AlfaBank", std::make_shared<Bank>()},
+     {"McDonalds", std::make_shared<Food>()},
+     {"Tour",std::make_shared<Travel>()}
+   };  
+    
+
+    string players[]{ "Peter","Ekaterina","Alexander" };
     Monopoly monopoly(players, 3);
-   auto actualCompanies = monopoly.GetFieldsList();
+
    int i = 0;
-   for (auto x : *actualCompanies)
+   for (const auto & [ nameField, monopoly_field ]: monopoly.Fields)
    {
-       ASSERT_EQ(x, expectedCompanies[i++]);
+        auto field = Fields[nameField];  
+      
+        ASSERT_EQ(field->m_SellingPrise,monopoly_field->m_SellingPrise);
+
+        if(auto rentalField = std::dynamic_pointer_cast<RentalField>(field) )
+         {
+            try{
+               
+                auto monopoly_rentalField = std::dynamic_pointer_cast<RentalField>(monopoly_field);
+                ASSERT_TRUE(monopoly_rentalField);  
+                ASSERT_EQ(monopoly_rentalField->m_RentalPrise,rentalField->m_RentalPrise);
+            }
+             catch(...)
+              {
+                FAIL();
+              } 
+         } 
+
+       
+        Fields.erase(nameField);   
    }
-   ASSERT_TRUE(i);   
+
+   ASSERT_FALSE(Fields.size());   
 }
 
 TEST(LAB2, PlayerBuyNoOwnedCompanies)
@@ -43,33 +72,22 @@ TEST(LAB2, PlayerBuyNoOwnedCompanies)
     string players[]{ "Peter","Ekaterina","Alexander" };
 
     Monopoly monopoly(players, 3);
-    auto x = monopoly.GetFieldByName("Ford");
-    monopoly.Buy(1, x);
 
-    auto player = monopoly.GetPlayerInfo(1);
-    ASSERT_EQ(get<1>(player), 5500);
-    x = monopoly.GetFieldByName("Ford");
-    ASSERT_TRUE(get<2>(x) != 0);
+    monopoly.Buy("Peter","Ford");
+
+   ASSERT_EQ( monopoly.getPlayer("Peter")->m_AccountReminder,5500);
+   ASSERT_EQ( std::dynamic_pointer_cast<RentalField>(monopoly.getField("Ford"))->m_Owner,monopoly.getPlayer("Peter")); 
 }
 
 TEST(LAB2, RentaShouldBeCorrectTransferMoney)
 {
     string players[]{ "Peter","Ekaterina","Alexander" };
     Monopoly monopoly(players, 3);
-    auto x = monopoly.GetFieldByName("Ford");
-    monopoly.Buy(1, x);
+    
+    ASSERT_TRUE(monopoly.Buy("Peter","Ford"));
+    monopoly.Rent("Ekaterina","Ford");
 
-    x = monopoly.GetFieldByName("Ford");
-    monopoly.Renta(2, x);
-    auto player1 = monopoly.GetPlayerInfo(1);
-    ASSERT_EQ(get<1>(player1), 5750);
+    ASSERT_EQ( monopoly.getPlayer("Ekaterina")->m_AccountReminder,5750);
+    ASSERT_EQ( monopoly.getPlayer("Peter")->m_AccountReminder,5750);
 
-    auto player2 = monopoly.GetPlayerInfo(2);
-    ASSERT_EQ(get<1>(player2), 5750);    
-}
-
-
-bool operator== (std::tuple<std::string, Monopoly::Type, int, bool> & a , std::tuple<std::string, Monopoly::Type, int, bool> & b)
-{
-    return get<0>(a) == get<0>(b) && get<1>(a) == get<1>(b) && get<2>(a) == get<2>(b) && get<3>(a) == get<3>(b);
 }

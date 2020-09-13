@@ -1,8 +1,9 @@
-project(calculator)
+project(monopoly)
 
 set(SRC
 	main.cpp
-	monopoly.cpp
+	monolopy.cpp
+        fields.cpp 
 )
 
 add_executable(${PROJECT_NAME}
