@@ -24,23 +24,34 @@ void show_cells() {
 
 }
 
-void make_move(int num, std::istream& is) {
-    if (num == 1) cout << PlayerName1;
-    else cout << PlayerName2;
-    int cell;
-    cout << ",введите номер ячейки,сделайте свой ход:";
-    is >> cell;
-  
+Move ask_move(int num, std::istream& is) {
+  Move move;
 
-       
-    while (cell > 9 || cell < 1 || cells[cell - 1] == 'O' || cells[cell - 1] == 'X') {
-        cout << "Введите номер правильного ( 1-9 ) или пустой ( --- ) клетки , чтобы сделать ход:";
-        is >> cell;
-        cout << "\n";
-    }
-    
-    if (num == 1) cells[cell - 1] = 'X';
-    else cells[cell - 1] = 'O';
+  if (num == 1) {
+    cout << PlayerName1;
+    move.value = 'X';
+  }
+  else {
+    cout << PlayerName2;
+    move.value = 'O';
+  }
+
+  int cell;
+  cout << ",введите номер ячейки,сделайте свой ход:";
+  is >> cell;
+
+  while (cell > 9 || cell < 1 || cells[cell - 1] == 'O' || cells[cell - 1] == 'X') {
+    cout << "Введите номер правильного ( 1-9 ) или пустой ( --- ) клетки , чтобы сделать ход:";
+    is >> cell;
+    cout << "\n";
+  }
+
+  move.cell = cell -1;
+  return move;
+}
+
+void make_move(const Move& move) {
+    cells[move.cell] = move.value;
 }
 
 char check()
@@ -76,9 +87,15 @@ void run(std::istream& is) {
     show_cells();
 
     for (int move = 1; move <= 9; move++) {
-        if (move % 2) make_move(1, is); 
-        else make_move(2, is);
-
+        Move move_data;
+        if (move % 2) {
+          move_data = ask_move(1, is);
+        }
+        else {
+          move_data = ask_move(2, is);
+        } 
+        
+        make_move(move_data);
         show_cells();
         
         if (move >= 5)

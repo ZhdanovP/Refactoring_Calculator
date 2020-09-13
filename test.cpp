@@ -6,15 +6,27 @@
 
 using namespace std;
 
-TEST(Game, MakeMove) {
+TEST(Game, AskMove) {
   memset(cells, '-', 9);
 
   istringstream iss{"1\n2\n"};
-  make_move(0, iss);
-  make_move(1, iss);
 
-  EXPECT_EQ(cells[0], 'O');
-  EXPECT_EQ(cells[1], 'X');
+  auto move1 = ask_move(1, iss);
+  EXPECT_EQ(move1.cell, 0);
+  EXPECT_EQ(move1.value, 'X');
+
+  auto move2 = ask_move(2, iss);
+  EXPECT_EQ(move2.cell, 1);
+  EXPECT_EQ(move2.value, 'O');
+}
+
+TEST(Game, MakeMove) {
+  memset(cells, '-', 9);
+
+  Move move{0, 'X'};
+  make_move(move);
+
+  EXPECT_EQ(cells[0], 'X');
 }
 
 TEST(Game, Run) {
