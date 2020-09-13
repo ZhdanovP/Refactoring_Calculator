@@ -1,3 +1,5 @@
+#include "tic_tac_toe.hpp"
+
 #include <iostream> 
 #include <cstring> 
 #include <clocale>
@@ -22,18 +24,18 @@ void show_cells() {
 
 }
 
-void make_move(int num) {
+void make_move(int num, std::istream& is) {
     if (num == 1) cout << PlayerName1;
     else cout << PlayerName2;
     int cell;
     cout << ",введите номер ячейки,сделайте свой ход:";
-    cin >> cell;
+    is >> cell;
   
 
        
     while (cell > 9 || cell < 1 || cells[cell - 1] == 'O' || cells[cell - 1] == 'X') {
         cout << "Введите номер правильного ( 1-9 ) или пустой ( --- ) клетки , чтобы сделать ход:";
-        cin >> cell;
+        is >> cell;
         cout << "\n";
     }
     
@@ -60,22 +62,22 @@ void result() {
 
 }
 
-int main(int argc, char** argv) {
+void run(std::istream& is) {
     setlocale(LC_ALL, "Russian");
     do {
         cout << "Введите имя первого игрока : ";
-        gets_s(PlayerName1,80);
+        is >> PlayerName1;
 
         cout << "Введите имя второго игрока: ";
-        gets_s(PlayerName2,80);
+        is >> PlayerName2;
         cout << "\n";
     } while (!strcmp(PlayerName1, PlayerName2));
     
     show_cells();
 
     for (int move = 1; move <= 9; move++) {
-        if (move % 2) make_move(1); 
-        else make_move(2);
+        if (move % 2) make_move(1, is); 
+        else make_move(2, is);
 
         show_cells();
         
@@ -89,6 +91,4 @@ int main(int argc, char** argv) {
     }
 
     result();
-   
-    return 0;
 }
