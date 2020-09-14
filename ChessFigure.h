@@ -13,18 +13,28 @@ struct Coord {
 
 	Coord(const char coords[2]) : Coord(coords[0], coords[1]) {}
 
-	char operator[](int i) {
-		if (i == 0)
-			return letter_;
-		else if (i == 1)
-			return digit_;
-		else
-			throw std::logic_error{"Should never happen"};
+	int LetterDistance(const Coord& other) const {
+		return other.letter_ - letter_;
 	}
+
+	int DigitDistance(const Coord& other) const {
+		return other.digit_ - digit_;
+	}
+
+	char Digit() { return digit_; }
+	char Letter() { return letter_; }
+
+	friend bool SameLetter(const Coord& c1, const Coord& c2);
+	friend bool SameDigit(const Coord& c1, const Coord& c2);
+	friend bool SameDiag(const Coord& c1, const Coord& c2);
+
 private:
 	char letter_;
 	char digit_;
 };
+
+
+
 
 class ChessFigure
 {
