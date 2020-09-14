@@ -1,9 +1,15 @@
-#include "ChessFigure.hpp"
-#include "test.h"
+#include "ChessFigure.h"
+#include <gtest/gtest.h>
 
 TEST(TestCaseName, TestName) {
   EXPECT_EQ(1, 1);
   EXPECT_TRUE(true);
+}
+
+TEST(LAB2, IncorrectCoord)
+{
+	ChessFigure *figure = new ChessFigure(ChessFigure::PAWN,"E2");
+	EXPECT_FALSE(figure->Move("i9"));
 }
 
 TEST(LAB2, RookShouldBeCorrectMove)
