@@ -6,6 +6,11 @@ set(BASE_DIR ${CMAKE_SOURCE_DIR})
 set(SRC
     main.cpp
     ChessFigure.cpp
+    Bishop.cpp
+    King.cpp
+    Pawn.cpp
+    Queen.cpp
+    Rook.cpp
 )
 
 add_executable(${PROJECT_NAME}
