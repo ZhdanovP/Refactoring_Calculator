@@ -18,7 +18,7 @@ TEST(LAB2, GetPlayersListReturnCorrectList) {
     int i = 0;
     for (const auto & [ namePlayer, player ]: monopoly.Players) {
         ASSERT_EQ(player->m_AccountReminder,6000);
-        find_if(&players[0],&players[3], [namePlayer,&i](string val ){  if(val == namePlayer){ i++; return true;}  return false; });
+        find_if(players,players+3, [namePlayer,&i](string namePlayerSrc ){ return(namePlayerSrc == namePlayer)? ++i: false; } );
     }
 
     ASSERT_EQ(i,3);
@@ -48,16 +48,10 @@ std::unordered_map<std::string,std::shared_ptr<Field>> Fields ={
 
         if(auto rentalField = std::dynamic_pointer_cast<RentalField>(field) )
          {
-            try{
-               
-                auto monopoly_rentalField = std::dynamic_pointer_cast<RentalField>(monopoly_field);
-                ASSERT_TRUE(monopoly_rentalField);  
-                ASSERT_EQ(monopoly_rentalField->m_RentalPrise,rentalField->m_RentalPrise);
-            }
-             catch(...)
-              {
-                FAIL();
-              } 
+
+          auto monopoly_rentalField = std::dynamic_pointer_cast<RentalField>(monopoly_field);
+          ASSERT_TRUE(monopoly_rentalField);  
+          ASSERT_EQ(monopoly_rentalField->m_RentalPrise,rentalField->m_RentalPrise);           
          } 
 
        
