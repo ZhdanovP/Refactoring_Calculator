@@ -33,7 +33,7 @@ bool ChessFigure::Move(string nextCoord)
 	{
 		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
 		{
-			if ((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1]) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
+			if (((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1])) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
 				return false;
 			else
 				return true;
@@ -48,7 +48,7 @@ bool ChessFigure::Move(string nextCoord)
 			int dx, dy;
 			dx = abs(nextCoord[0] - currentCoord[0]);
 			dy = abs(nextCoord[1] - currentCoord[1]);
-		    if (!(abs(nextCoord[0] - currentCoord[0]) == 1 && abs(nextCoord[1] - currentCoord[1]) == 2 || abs(nextCoord[0] - currentCoord[0]) == 2 && abs(nextCoord[1] - currentCoord[1]) == 1))
+		    if (!((abs(nextCoord[0] - currentCoord[0]) == 1 && abs(nextCoord[1] - currentCoord[1]) == 2) || (abs(nextCoord[0] - currentCoord[0]) == 2 && abs(nextCoord[1] - currentCoord[1]) == 1)))
 			  return false;
 			else
 			return true;
