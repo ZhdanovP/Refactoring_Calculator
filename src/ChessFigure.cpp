@@ -10,6 +10,9 @@ ChessFigure::ChessFigure(ChessFigure::FigureType type, std::string coord)
 ChessFigure::~ChessFigure() {}
 
 bool ChessFigure::Move(string nextCoord) {
+  int horizontalCoordDist = abs(nextCoord[0] - currentCoord[0]);
+  int verticalCoordDist = abs(nextCoord[1] - currentCoord[1]);
+
   if (isCoordinatesValid(nextCoord)) {
     if (type == PAWN) {
       if (nextCoord[0] != currentCoord[0] || nextCoord[1] <= currentCoord[1] ||
@@ -28,40 +31,31 @@ bool ChessFigure::Move(string nextCoord) {
       else
         return true;
     } else if (type == KNIGHT) {
-      int dx, dy;
-      dx = abs(nextCoord[0] - currentCoord[0]);
-      dy = abs(nextCoord[1] - currentCoord[1]);
-      if (!((abs(nextCoord[0] - currentCoord[0]) == 1 &&
-             abs(nextCoord[1] - currentCoord[1]) == 2) ||
-            (abs(nextCoord[0] - currentCoord[0]) == 2 &&
-             abs(nextCoord[1] - currentCoord[1]) == 1)))
+      if (!((horizontalCoordDist == 1 && verticalCoordDist == 2) ||
+            (horizontalCoordDist == 2 && verticalCoordDist == 1)))
         return false;
       else
         return true;
     } else if (type == BISHOP) {
-      if (!(abs(nextCoord[0] - currentCoord[0]) ==
-            abs(nextCoord[1] - currentCoord[1])))
+      if (!(horizontalCoordDist == verticalCoordDist))
         return false;
       else
         return true;
     } else if (type == KING) {
-      if (!(abs(nextCoord[0] - currentCoord[0]) <= 1 &&
-            abs(nextCoord[1] - currentCoord[1]) <= 1))
+      if (!(horizontalCoordDist <= 1 && verticalCoordDist <= 1))
         return false;
       else
         return true;
     } else if (type == QUEEN) {
-      if (!(abs(nextCoord[0] - currentCoord[0]) ==
-                abs(nextCoord[1] - currentCoord[1]) ||
+      if (!(horizontalCoordDist == verticalCoordDist ||
             nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1]))
         return false;
       else
         return true;
     } else
       return false;
-  } else {
+  } else
     return false;
-  }
 }
 
 bool ChessFigure::isCoordinatesValid(string nextCoord) {
