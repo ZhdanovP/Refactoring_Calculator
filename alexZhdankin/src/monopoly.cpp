@@ -69,7 +69,7 @@ bool Monopoly::Buy(Player& player, Field& field)
 	return result;
 }
 
-bool Monopoly::Renta(Player& player, const Field& field)
+bool Monopoly::Renta(Player& player, Field& field)
 {
 	auto currentFieldType = field.getType();
 	auto result = true;

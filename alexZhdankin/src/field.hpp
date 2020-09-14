@@ -23,7 +23,8 @@ class Field
         FieldType getType() const { return type; }
         int getPrice() const { return price; }
         int getRenta() const { return renta; }
-        Player* getOwner() const { return owner; }
+        Player* getOwner() { return owner; }
+        const Player* getOwner() const {return owner; }
 
         void setOwner(Player* player) { owner = player; }
 

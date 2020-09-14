@@ -20,7 +20,7 @@ class Monopoly
 		const std::vector<Field>& GetFieldsList();
 
 		bool Buy(Player&, Field&);
-		bool Renta(Player&, const Field&);
+		bool Renta(Player&, Field&);
 		Player* GetPlayer(FigureType);	 
 		Field* GetField(std::string);	
 
