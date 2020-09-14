@@ -48,7 +48,7 @@ bool ChessFigure::Move(string nextCoord)
 			int dx, dy;
 			dx = abs(nextCoord[0] - currentCoord[0]);
 			dy = abs(nextCoord[1] - currentCoord[1]);
-		    if (!((abs(nextCoord[0] - currentCoord[0]) == 1 && abs(nextCoord[1] - currentCoord[1]) == 2) || (abs(nextCoord[0] - currentCoord[0]) == 2 && abs(nextCoord[1] - currentCoord[1]) == 1)))
+		    if ((abs(nextCoord[0] - currentCoord[0]) != 1 || abs(nextCoord[1] - currentCoord[1]) != 2) && (abs(nextCoord[0] - currentCoord[0]) != 2 || abs(nextCoord[1] - currentCoord[1]) != 1))
 			  return false;
 			else
 			return true;
