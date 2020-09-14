@@ -1,70 +1,71 @@
-#include "monolopy.hpp"
+#include "monopoly.hpp"
 #include "gtest/gtest.h"
 
 using namespace ::std;
 using namespace ::Game;
 class MonopolyTest : public testing::Test {
  public:
-  void SetUp() override {
-    players.insert(players.begin(),
-                   {Player("Peter"), Player("Ekaterina"), Player("Alexander")});
+  explicit MonopolyTest()
+      : players({make_shared<Player>("Peter"),
+                 make_shared<Player>("Olga"),
+                 make_shared<Player>("Alexander")})
+      , monopoly(players) {}
+  ~MonopolyTest() {
+    Player::nullifyCounter();
   }
-  void TearDown() override {}
-
-  vector<Player> players;
+  vector<shared_ptr<Player> > players;
+  Monopoly monopoly;
 };
 
 TEST_F(MonopolyTest, GetPlayersListReturnCorrectList) {
   Monopoly monopoly(players);
 
-  vector<Player>* x = monopoly.GetPlayers();
+  auto x = monopoly.GetPlayers();
   size_t i = 0;
   for (; i < players.size(); i++) {
-    ASSERT_EQ((*x)[i].getName(), players[i].getName());
-    ASSERT_EQ((*x)[i].getMoney(), 6000);
+    ASSERT_EQ(x[i]->getName(), players[i]->getName());
+    ASSERT_EQ(x[i]->getMoney(), 6000);
   }
   ASSERT_EQ(i, players.size());
 }
 TEST_F(MonopolyTest, GetFieldsListReturnCorrectList) {
-  vector<Field> expectedCompanies({Field("Ford", Field::AUTO, 0, false),
-                                   Field("MCDonald", Field::FOOD, 0, false),
-                                   Field("Lamoda", Field::CLOTHER, 0, false),
-                                   Field("Air Baltic", Field::TRAVEL, 0, false),
-                                   Field("Nordavia", Field::TRAVEL, 0, false),
-                                   Field("Prison", Field::PRISON, 0, false),
-                                   Field("MCDonald", Field::FOOD, 0, false),
-                                   Field("TESLA", Field::AUTO, 0, false)});
+  vector<shared_ptr<Field> > expectedCompanies(
+      {make_shared<Field>("Ford", Field::AUTO),
+       make_shared<Field>("MCDonald", Field::FOOD),
+       make_shared<Field>("Lamoda", Field::CLOTHER),
+       make_shared<Field>("Air Baltic", Field::TRAVEL),
+       make_shared<Field>("Nordavia", Field::TRAVEL),
+       make_shared<Field>("Prison", Field::PRISON),
+       make_shared<Field>("MCDonald", Field::FOOD),
+       make_shared<Field>("TESLA", Field::AUTO)});
 
-  Monopoly monopoly(players);
   auto actualCompanies = monopoly.GetFields();
-  int i = 0;
-  for (auto x : *actualCompanies) {
-    ASSERT_EQ(x, expectedCompanies[i++]);
+  size_t i = 0;
+  for (; i < actualCompanies.size(); i++) {
+    ASSERT_EQ(*(actualCompanies[i]), *(expectedCompanies[i]));
   }
-  ASSERT_TRUE(i);
+  ASSERT_EQ(i, actualCompanies.size());
 }
 
 TEST_F(MonopolyTest, PlayerBuyNoOwnedCompanies) {
-  Monopoly monopoly(players);
   auto x = monopoly.GetFieldByName("Ford");
-  monopoly.Buy(1, x);
+  monopoly.Buy(players.at(1), x);
 
   auto player = monopoly.GetPlayerInfo(1);
-  ASSERT_EQ(player.getMoney(), 5500);
+  ASSERT_EQ(player->getMoney(), 5500);
   x = monopoly.GetFieldByName("Ford");
-  ASSERT_TRUE(x.getNumber() != 0);
+  ASSERT_TRUE(x->isOwned());
 }
 
 TEST_F(MonopolyTest, RentaShouldBeCorrectTransferMoney) {
-  Monopoly monopoly(players);
   auto x = monopoly.GetFieldByName("Ford");
-  monopoly.Buy(1, x);
+  monopoly.Buy(players.at(1), x);
 
   x = monopoly.GetFieldByName("Ford");
-  monopoly.Renta(2, x);
+  monopoly.Renta(players.at(2), x);
   auto player1 = monopoly.GetPlayerInfo(1);
-  ASSERT_EQ(player1.getMoney(), 5750);
+  ASSERT_EQ(player1->getMoney(), 5750);
 
   auto player2 = monopoly.GetPlayerInfo(2);
-  ASSERT_EQ(player2.getMoney(), 5750);
+  ASSERT_EQ(player2->getMoney(), 5750);
 }

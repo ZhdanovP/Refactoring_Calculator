@@ -6,29 +6,32 @@ namespace Game {
 
 class Player {
  public:
-  Player(const std::string& name = "", int money = 6000)
-      : name(name), money(money) {}
-  std::string getName() const {
-    return name;
+  Player(const std::string& name = "", int money = 6000);
+
+  std::string getName() const;
+
+  int getMoney() const;
+
+  int debit(int amountOfMoney);
+
+  int addMoney(int amountOfMoney);
+
+  int getID() const;
+
+  static void nullifyCounter() {
+    counter = 0;
   }
 
-  int getMoney() const {
-    return money;
-  }
+  bool operator==(const Player& other) const;
 
-  int debit(int amountOfMoney) {
-    money -= amountOfMoney;
-    return money;
-  }
-
-  int addMoney(int amountOfMoney) {
-    money += amountOfMoney;
-    return money;
-  }
+  bool operator!=(const Player& other) const;
 
  private:
-  std::string name;
-  int money;
+  static size_t counter;
+
+  std::string name_;
+  int money_;
+  int id_;
 };
 }
 #endif
