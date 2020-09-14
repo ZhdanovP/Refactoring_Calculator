@@ -1,4 +1,4 @@
-#ifdef CHESS_FIGURE_HPP
+#ifndef CHESS_FIGURE_HPP
 #define CHESS_FIGURE_HPP
 
 #include <string>
