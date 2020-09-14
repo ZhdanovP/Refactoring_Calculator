@@ -32,47 +32,28 @@ int AbsDistanceSquared(const Coord &c1, const Coord &c2) {
 }
 
 bool Pawn::Move(Coord nextCoord) const {
-  if (!SameLetter(currentCoord, nextCoord) ||
-      currentCoord.DigitDistance(nextCoord) <= 0 ||
-      (currentCoord.DigitDistance(nextCoord) != 1 &&
-       (currentCoord.Digit() != '2' || nextCoord.Digit() != '4')))
-    return false;
-  else
-    return true;
+  bool movesByOne = currentCoord.DigitDistance(nextCoord) == 1;
+  bool firstMoveByTwo = currentCoord.Digit() == '2' && nextCoord.Digit() == '4';
+  return SameLetter(currentCoord, nextCoord) && (movesByOne || firstMoveByTwo);
 }
 
 bool Rook::Move(Coord nextCoord) const {
-  if (!SameLine(currentCoord, nextCoord))
-    return false;
-  else
-    return true;
+  return SameLine(currentCoord, nextCoord);
 }
 
 bool Knight::Move(Coord nextCoord) const {
-  if (SameLine(currentCoord, nextCoord) ||
-      AbsDistanceSquared(currentCoord, nextCoord) != 5)
-    return false;
-  else
-    return true;
+  return !SameLine(currentCoord, nextCoord) &&
+         AbsDistanceSquared(currentCoord, nextCoord) == 5;
 }
 
 bool Bishop::Move(Coord nextCoord) const {
-  if (!SameDiag(currentCoord, nextCoord))
-    return false;
-  else
-    return true;
+  return SameDiag(currentCoord, nextCoord);
 }
 
 bool King::Move(Coord nextCoord) const {
-  if (AbsMaxDistance(currentCoord, nextCoord) != 1)
-    return false;
-  else
-    return true;
+  return AbsMaxDistance(currentCoord, nextCoord) == 1;
 }
 
 bool Queen::Move(Coord nextCoord) const {
-  if (!SameLine(currentCoord, nextCoord) && !SameDiag(currentCoord, nextCoord))
-    return false;
-  else
-    return true;
+  return SameLine(currentCoord, nextCoord) || SameDiag(currentCoord, nextCoord);
 }
