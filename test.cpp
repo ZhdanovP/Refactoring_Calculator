@@ -20,6 +20,14 @@ TEST(LAB2, GetPlayersListReturnCorrectList)
     }
     ASSERT_TRUE(i);
 }
+
+TEST(LAB2, MoreThenTenPlayersReturnException)
+{
+    auto constexpr maxPlayersNumber = 10;
+
+    EXPECT_THROW(Monopoly monopoly(std::vector<string>(maxPlayersNumber + 1, "player")), std::invalid_argument);
+}
+
 TEST(LAB2, GetFieldsListReturnCorrectList)
 {
     std::vector<Field> expectedCompanies{{"Ford", Industry::AUTO},
@@ -40,6 +48,7 @@ TEST(LAB2, GetFieldsListReturnCorrectList)
     ASSERT_TRUE(i);
 }
 
+
 TEST(LAB2, PlayerBuyNoOwnedCompanies)
 {
     Monopoly monopoly(kPlayers);
@@ -50,6 +59,22 @@ TEST(LAB2, PlayerBuyNoOwnedCompanies)
     ASSERT_EQ(player.money, 5500);
     auto afterFieldValue = monopoly.FieldByName("Ford");
     ASSERT_TRUE(afterFieldValue.owner != 0);
+}
+
+TEST(LAB2, PlayerInfoWithInvalidNumberReturnEmptyPlayer)
+{
+    Monopoly monopoly(kPlayers);
+    auto     player = monopoly.PlayerInfo(kPlayers.size());
+
+    ASSERT_TRUE(player.name.empty());
+}
+
+TEST(LAB2, InvalidNameFieldReturnEmptyField)
+{
+    Monopoly monopoly(kPlayers);
+    auto     field = monopoly.FieldByName("INVALID");
+
+    ASSERT_TRUE(field.company.empty());
 }
 
 TEST(LAB2, RentaShouldBeCorrectTransferMoney)

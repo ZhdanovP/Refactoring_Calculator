@@ -9,8 +9,8 @@ operator==(Field const& lhs, Field const& rhs)
 
 namespace {
 
-auto constexpr fieldPurchasePrice = [](auto const& purchasedField) {
-    switch (purchasedField.type) {
+auto constexpr fieldPurchasePrice = [](auto const& purchasedFieldType) {
+    switch (purchasedFieldType) {
     case Industry::AUTO:
         return 500;
     case Industry::FOOD:
@@ -24,8 +24,8 @@ auto constexpr fieldPurchasePrice = [](auto const& purchasedField) {
     };
 };
 
-auto constexpr fieldRentPrice = [](auto const& rentedField) {
-    switch (rentedField.type) {
+auto constexpr fieldRentPrice = [](auto const& rentedFieldType) {
+    switch (rentedFieldType) {
     case Industry::AUTO:
         return 250;
     case Industry::TRAVEL:
@@ -97,7 +97,7 @@ Monopoly::Buy(size_t const player, Field const& purchasedField)
         return false;
     }
 
-    auto const price = fieldPurchasePrice(purchasedField);
+    auto const price = fieldPurchasePrice(purchasedField.type);
     if (price == 0) {
         return false;
     }
@@ -125,7 +125,7 @@ Monopoly::Renta(size_t const renter, Field const& rentedField)
     if (!rentedField.owner.has_value()) {
         return false;
     }
-    auto const price = fieldRentPrice(rentedField);
+    auto const price = fieldRentPrice(rentedField.type);
     if (price == 0) {
         return false;
     }
