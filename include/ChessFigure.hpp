@@ -1,4 +1,4 @@
-#ifdef CHESS_FIGURE_HPP
+#ifndef CHESS_FIGURE_HPP
 #define CHESS_FIGURE_HPP
 
 #include <string>
@@ -16,8 +16,10 @@ public:
 		QUEEN
 	};
 	ChessFigure(FigureType type,std::string coord);
-	bool Move(std::string nextCoord);
+	virtual bool Move(std::string nextCoord);
 	virtual ~ChessFigure();
+protected:
+	bool checkFieldCoordinates(std::string nextCoord);
 private:
 	FigureType type;
 	std::string currentCoord;
