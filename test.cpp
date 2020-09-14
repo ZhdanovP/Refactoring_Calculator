@@ -9,7 +9,7 @@ TEST(TestCaseName, TestName) {
 TEST(LAB2, IncorrectCoord)
 {
 	ChessFigure *figure = new ChessFigure(ChessFigure::PAWN,"E2");
-	EXPECT_FALSE(figure->Move("i9"));
+	EXPECT_THROW(figure->Move("i9"), std::invalid_argument);
 }
 
 TEST(LAB2, RookShouldBeCorrectMove)

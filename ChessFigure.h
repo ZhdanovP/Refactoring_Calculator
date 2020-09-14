@@ -1,7 +1,31 @@
-#ifdef CHESS_FIGURE_HPP
+#ifndef CHESS_FIGURE_HPP
 #define CHESS_FIGURE_HPP
 
-#include <string>
+#include <stdexcept>
+
+struct Coord {
+	Coord(char letter, char digit) : letter_{letter}, digit_{digit} {
+		if (letter_ < 'A' || letter_ > 'H')
+			throw std::invalid_argument{"Letter part of coordinate must be in A-H range"};
+		if (digit_ < '1' || digit_ > '8')
+			throw std::invalid_argument{"Digit part of coordinate must be in 1-8 range"};
+	}
+
+	Coord(const char coords[2]) : Coord(coords[0], coords[1]) {}
+
+	char operator[](int i) {
+		if (i == 0)
+			return letter_;
+		else if (i == 1)
+			return digit_;
+		else
+			throw std::logic_error{"Should never happen"};
+	}
+private:
+	char letter_;
+	char digit_;
+};
+
 class ChessFigure
 {
 	
@@ -15,12 +39,12 @@ public:
 		KING,
 		QUEEN
 	};
-	ChessFigure(FigureType type,std::string coord);
-	bool Move(std::string nextCoord);
+	ChessFigure(FigureType type, Coord coord);
+	bool Move(Coord nextCoord);
 	virtual ~ChessFigure();
 private:
 	FigureType type;
-	std::string currentCoord;
+	Coord currentCoord;
 };
 
 #endif
