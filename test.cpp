@@ -1,75 +1,93 @@
+#include "gtest/gtest.h"
 #include "monolopy.hpp"
 
 using namespace ::std;
+namespace {
 
-TEST(LAB2, GetPlayersListReturnCorrectList) {
-    string players[]{ "Peter","Ekaterina","Alexander" };
-   
-    Monopoly monopoly(players,3);
+std::vector<string> const kPlayers{"Peter", "Ekaterina", "Alexander"};
+}
 
-    list<tuple<string,int>>* x = monopoly.GetPlayersList();
-    int i = 0;
-    for (auto c : *x) {
-        ASSERT_STREQ(get<0>(c).c_str(), players[i++].c_str());
-        ASSERT_EQ(get<1>(c), 6000);
+
+TEST(LAB2, GetPlayersListReturnCorrectList)
+{
+    Monopoly monopoly(kPlayers);
+
+    auto playersList = monopoly.PlayersList();
+    int  i           = 0;
+    for (auto c : playersList) {
+        ASSERT_EQ(c.name, kPlayers[i++].c_str());
+        ASSERT_EQ(c.money, 6000);
     }
     ASSERT_TRUE(i);
 }
-TEST(LAB2, GetFieldsListReturnCorrectList) {
-    tuple<string, Monopoly::Type,int,bool> expectedCompanies[]{
-        make_tuple("Ford",Monopoly::AUTO ,0,false),
-        make_tuple("MCDonald",Monopoly::FOOD,0,false),
-        make_tuple("Lamoda",Monopoly::CLOTHER,0,false),
-        make_tuple("Air Baltic",Monopoly::TRAVEL,0,false),
-        make_tuple("Nordavia",Monopoly::TRAVEL,0,false),
-        make_tuple("Prison",Monopoly::PRISON,0,false),
-        make_tuple("MCDonald",Monopoly::FOOD,0,false),
-        make_tuple("TESLA",Monopoly::AUTO,0,false)
-    };
-    string players[]{ "Peter","Ekaterina","Alexander" };
 
-    Monopoly monopoly(players, 3);
-   auto actualCompanies = monopoly.GetFieldsList();
-   int i = 0;
-   for (auto x : *actualCompanies)
-   {
-       ASSERT_EQ(x, expectedCompanies[i++]);
-   }
-   ASSERT_TRUE(i);   
+TEST(LAB2, MoreThenTenPlayersReturnException)
+{
+    auto constexpr maxPlayersNumber = 10;
+
+    EXPECT_THROW(Monopoly monopoly(std::vector<string>(maxPlayersNumber + 1, "player")), std::invalid_argument);
 }
+
+TEST(LAB2, GetFieldsListReturnCorrectList)
+{
+    std::vector<Field> expectedCompanies{{"Ford", Industry::AUTO},
+                                         {"MCDonald", Industry::FOOD},
+                                         {"Lamoda", Industry::CLOTHER},
+                                         {"Air Baltic", Industry::TRAVEL},
+                                         {"Nordavia", Industry::TRAVEL},
+                                         {"MCDonald", Industry::FOOD},
+                                         {"TESLA", Industry::AUTO}};
+
+
+    Monopoly monopoly(kPlayers);
+    auto     actualCompanies = monopoly.FieldsList();
+    int      i               = 0;
+    for (auto x : actualCompanies) {
+        ASSERT_EQ(x, expectedCompanies[i++]);
+    }
+    ASSERT_TRUE(i);
+}
+
 
 TEST(LAB2, PlayerBuyNoOwnedCompanies)
 {
-    string players[]{ "Peter","Ekaterina","Alexander" };
+    Monopoly monopoly(kPlayers);
+    auto     startFieldValue = monopoly.FieldByName("Ford");
+    monopoly.Buy(1, startFieldValue);
 
-    Monopoly monopoly(players, 3);
-    auto x = monopoly.GetFieldByName("Ford");
-    monopoly.Buy(1, x);
+    auto player = monopoly.PlayerInfo(1);
+    ASSERT_EQ(player.money, 5500);
+    auto afterFieldValue = monopoly.FieldByName("Ford");
+    ASSERT_TRUE(afterFieldValue.owner != 0);
+}
 
-    auto player = monopoly.GetPlayerInfo(1);
-    ASSERT_EQ(get<1>(player), 5500);
-    x = monopoly.GetFieldByName("Ford");
-    ASSERT_TRUE(get<2>(x) != 0);
+TEST(LAB2, PlayerInfoWithInvalidNumberReturnEmptyPlayer)
+{
+    Monopoly monopoly(kPlayers);
+    auto     player = monopoly.PlayerInfo(kPlayers.size());
+
+    ASSERT_TRUE(player.name.empty());
+}
+
+TEST(LAB2, InvalidNameFieldReturnEmptyField)
+{
+    Monopoly monopoly(kPlayers);
+    auto     field = monopoly.FieldByName("INVALID");
+
+    ASSERT_TRUE(field.company.empty());
 }
 
 TEST(LAB2, RentaShouldBeCorrectTransferMoney)
 {
-    string players[]{ "Peter","Ekaterina","Alexander" };
-    Monopoly monopoly(players, 3);
-    auto x = monopoly.GetFieldByName("Ford");
-    monopoly.Buy(1, x);
+    Monopoly monopoly(kPlayers);
+    auto     startFieldValue = monopoly.FieldByName("Ford");
+    monopoly.Buy(1, startFieldValue);
 
-    x = monopoly.GetFieldByName("Ford");
-    monopoly.Renta(2, x);
-    auto player1 = monopoly.GetPlayerInfo(1);
-    ASSERT_EQ(get<1>(player1), 5750);
+    auto afterFieldValue = monopoly.FieldByName("Ford");
+    monopoly.Renta(2, afterFieldValue);
+    auto player1 = monopoly.PlayerInfo(1);
+    ASSERT_EQ(player1.money, 5750);
 
-    auto player2 = monopoly.GetPlayerInfo(2);
-    ASSERT_EQ(get<1>(player2), 5750);    
-}
-
-
-bool operator== (std::tuple<std::string, Monopoly::Type, int, bool> & a , std::tuple<std::string, Monopoly::Type, int, bool> & b)
-{
-    return get<0>(a) == get<0>(b) && get<1>(a) == get<1>(b) && get<2>(a) == get<2>(b) && get<3>(a) == get<3>(b);
+    auto player2 = monopoly.PlayerInfo(2);
+    ASSERT_EQ(player2.money, 5750);
 }
