@@ -11,6 +11,7 @@ class ChessFigure {
   virtual ~ChessFigure();
 
  private:
+  bool isCoordinatesValid(std::string nextCoord);
   FigureType type;
   std::string currentCoord;
 };
