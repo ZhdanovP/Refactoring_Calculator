@@ -5,86 +5,76 @@
 using namespace std;
 
 ChessFigure::ChessFigure(std::string coord) :
-currentCoord(coord){
+currentPosition(coord[0],coord[1]){
 }
 
+bool ChessFigure::Move( string nextCoord )
+{
+     Position nextPosition(nextCoord[0],nextCoord[1]);
 
-bool Pawn::Move(string nextCoord){
+     if(nextPosition.outsideEdges())
+     	     return false;
 
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (nextCoord[0] != currentCoord[0] || nextCoord[1] <= currentCoord[1] || (nextCoord[1] - currentCoord[1] != 1 && (currentCoord[1] != '2' || nextCoord[1] != '4')))
+     return makeMove(nextPosition); 	 
+}
+
+bool Pawn::makeMove(const Position &nextPosition){
+
+	    
+	if (nextPosition.m_Horisontal != currentPosition.m_Horisontal || nextPosition.m_Vertical <= currentPosition.m_Vertical || (nextPosition.m_Vertical - currentPosition.m_Vertical != 1 && (currentPosition.m_Vertical != '2' || nextPosition.m_Vertical != '4')))
 				return false;
 			else
 				return true;
-		}
-		else return false;
 	
 }
 
-bool Rook::Move(string nextCoord){
+bool Rook::makeMove(const Position &nextPosition){
 
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if ((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1]) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
+			if ((nextPosition.m_Horisontal != currentPosition.m_Horisontal) && (nextPosition.m_Vertical != currentPosition.m_Vertical) || ((nextPosition.m_Horisontal == currentPosition.m_Horisontal) && (nextPosition.m_Vertical == currentPosition.m_Vertical)))
 				return false;
 			else
 				return true;
 
-		}
-		else return false;
 }
 
-bool Knight::Move(string nextCoord){
+bool Knight::makeMove(const Position &nextPosition){
     
-     if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
+    
 			int dx, dy;
-			dx = abs(nextCoord[0] - currentCoord[0]);
-			dy = abs(nextCoord[1] - currentCoord[1]);
-		    if (!(abs(nextCoord[0] - currentCoord[0]) == 1 && abs(nextCoord[1] - currentCoord[1]) == 2 || abs(nextCoord[0] - currentCoord[0]) == 2 && abs(nextCoord[1] - currentCoord[1]) == 1))
+			dx = abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal);
+			dy = abs(nextPosition.m_Vertical - currentPosition.m_Vertical);
+		    if (!(abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal) == 1 && abs(nextPosition.m_Vertical - currentPosition.m_Vertical) == 2 || abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal) == 2 && abs(nextPosition.m_Vertical - currentPosition.m_Vertical) == 1))
 			  return false;
 			else
 			return true;
-		}
-		else return false;
+		
 
 }
 
-bool Bishop::Move(string nextCoord){
+bool Bishop::makeMove(const Position &nextPosition){
 
-      if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1])))
+     
+			if (!(abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal) == abs(nextPosition.m_Vertical - currentPosition.m_Vertical)))
 				return false;
 			else
 				return true;
-		}
-		else return false;   
+		  
 }
 
-bool King::Move(string nextCoord){
+bool King::makeMove(const Position &nextPosition){
 
-	 if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) <= 1 && abs(nextCoord[1] - currentCoord[1]) <= 1))
+	
+			if (!(abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal) <= 1 && abs(nextPosition.m_Vertical - currentPosition.m_Vertical) <= 1))
 				return false;
 			else
 				return true;
-		}
-		else return false;
-
+		
 }
 
-bool Queen::Move(string nextCoord){
+bool Queen::makeMove(const Position &nextPosition){
 
-	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]) || nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1]))
+			if (!(abs(nextPosition.m_Horisontal - currentPosition.m_Horisontal) == abs(nextPosition.m_Vertical - currentPosition.m_Vertical) || nextPosition.m_Horisontal == currentPosition.m_Horisontal || nextPosition.m_Vertical == currentPosition.m_Vertical))
 				return false;
 			else
-				return true;
-		}
-		else return false;
-
+	            return true;   
 }	
