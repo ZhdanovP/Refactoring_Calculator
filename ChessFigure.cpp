@@ -10,15 +10,18 @@ ChessFigure::ChessFigure(std::string coord) : currentCoord(coord)
 
 ChessFigure::~ChessFigure() = default;
 
-bool ChessFigure::isWithinBoard(std::string nextCoord)
+bool ChessFigure::checkCoords(std::string nextCoord)
 {
-	return nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8';
+    const bool validColomn = nextCoord[0] >= 'A' && nextCoord[0] <= 'H';
+    const bool validRow = nextCoord[1] >= '1' && nextCoord[1] <= '8';
+    const bool moves = nextCoord != currentCoord;
+	return validColomn && validRow && moves;
 }
 
 
 bool Pawn::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
 		const bool vertical = nextCoord[0] == currentCoord[0];
 		const bool forward = nextCoord[1] > currentCoord[1];
@@ -32,12 +35,11 @@ bool Pawn::Move(string nextCoord)
 
 bool Rook::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
 		const bool vertical = nextCoord[0] == currentCoord[0];
         const bool horizontal = nextCoord[1] == currentCoord[1];
-        const bool stay = vertical && vertical;
-		if ((vertical || horizontal) && !stay)
+		if (vertical || horizontal)
 			return true;
 	}
 	return false;
@@ -45,11 +47,13 @@ bool Rook::Move(string nextCoord)
 
 bool Knight::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
-		const int dx = abs(nextCoord[0] - currentCoord[0]);
-		const int dy = abs(nextCoord[1] - currentCoord[1]);
-		if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1))
+		const int dx = nextCoord[0] - currentCoord[0];
+		const int dy = nextCoord[1] - currentCoord[1];
+        const bool g1 = abs(dx) == 1 && abs(dy) == 2;
+        const bool g2 = abs(dx) == 2 && abs(dy) == 1;
+		if (g1 || g2)
 			return true;
 	}
 	return false;
@@ -57,12 +61,12 @@ bool Knight::Move(string nextCoord)
 
 bool Bishop::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
-		const int dx = abs(nextCoord[0] - currentCoord[0]);
-		const int dy = abs(nextCoord[1] - currentCoord[1]);
-        const bool stay = nextCoord == currentCoord;
-		if (dx == dy && !stay)
+		const int dx = nextCoord[0] - currentCoord[0];
+		const int dy = nextCoord[1] - currentCoord[1];
+		const bool diagonal = abs(dx) == abs(dy);
+		if (diagonal)
 			return true;
 	}
 	return false;
@@ -70,12 +74,11 @@ bool Bishop::Move(string nextCoord)
 
 bool King::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
 		const int dx = nextCoord[0] - currentCoord[0];
 		const int dy = nextCoord[1] - currentCoord[1];
-		const bool stay = nextCoord == currentCoord;
-		if (abs(dx) <= 1 && abs(dy) <= 1 && !stay)
+		if (abs(dx) <= 1 && abs(dy) <= 1)
 			return true;
 	}
 	return false;
@@ -83,15 +86,14 @@ bool King::Move(string nextCoord)
 
 bool Queen::Move(string nextCoord)
 {
-	if (isWithinBoard(nextCoord))
+	if (checkCoords(nextCoord))
 	{
 		const int dx = nextCoord[0] - currentCoord[0];
 		const int dy = nextCoord[1] - currentCoord[1];
 		const bool vertical = nextCoord[0] == currentCoord[0];
 		const bool horizontal = nextCoord[1] == currentCoord[1];
 		const bool diagonal = abs(dx) == abs(dy);
-		const bool stay = nextCoord == currentCoord;
-		if ((diagonal || vertical || horizontal) && !stay)
+		if (diagonal || vertical || horizontal)
 			return true;
 	}
 	return false;

@@ -4,13 +4,12 @@
 #include <string>
 class ChessFigure
 {
-	
 public:
 	ChessFigure(std::string coord);
 	virtual bool Move(std::string nextCoord) = 0;
-    bool isWithinBoard(std::string nextCoord);
 	virtual ~ChessFigure();
 protected:
+	bool checkCoords(std::string nextCoord);
 	std::string currentCoord;
 };
 
