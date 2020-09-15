@@ -4,8 +4,7 @@
 
 using namespace std;
 
-ChessFigure::ChessFigure(ChessFigure::FigureType type, std::string coord) : type(type),
-currentCoord(coord)
+ChessFigure::ChessFigure(std::string coord) : currentCoord(coord)
 {
 }
 
@@ -16,80 +15,80 @@ ChessFigure::~ChessFigure()
 
 bool ChessFigure::Move(string nextCoord)
 {
-	if (type == PAWN)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (nextCoord[0] != currentCoord[0] || nextCoord[1] <= currentCoord[1] || (nextCoord[1] - currentCoord[1] != 1 && (currentCoord[1] != '2' || nextCoord[1] != '4')))
-				return false;
-			else
-				return true;
-		}
-		else return false;
-			
-	}
-	
-	else if (type == ROOK)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1])) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
-				return false;
-			else
-				return true;
+  return false;
+}
 
-		}
-		else return false;
-	}
-	else if (type == KNIGHT)
+bool Pawn::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
 	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			int dx, dy;
-			dx = abs(nextCoord[0] - currentCoord[0]);
-			dy = abs(nextCoord[1] - currentCoord[1]);
-		    if ((abs(nextCoord[0] - currentCoord[0]) != 1 || abs(nextCoord[1] - currentCoord[1]) != 2) && (abs(nextCoord[0] - currentCoord[0]) != 2 || abs(nextCoord[1] - currentCoord[1]) != 1))
-			  return false;
-			else
+		if (nextCoord[0] != currentCoord[0] || nextCoord[1] <= currentCoord[1] || (nextCoord[1] - currentCoord[1] != 1 && (currentCoord[1] != '2' || nextCoord[1] != '4')))
+			return false;
+		else
 			return true;
-		}
-		else return false;
 	}
-	
-	else if (type == BISHOP)
+	else return false;
+}
+
+bool Rook::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
 	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1])))
-				return false;
-			else
-				return true;
-		}
-		else return false;
+		if (((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1])) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
+			return false;
+		else
+			return true;
 	}
-	
-	else if (type == KING)
+	else return false;
+}
+
+bool Knight::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
 	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) <= 1 && abs(nextCoord[1] - currentCoord[1]) <= 1))
-				return false;
-			else
-				return true;
-		}
-		else return false;
+		int dx, dy;
+		dx = abs(nextCoord[0] - currentCoord[0]);
+		dy = abs(nextCoord[1] - currentCoord[1]);
+	    if ((abs(nextCoord[0] - currentCoord[0]) != 1 || abs(nextCoord[1] - currentCoord[1]) != 2) && (abs(nextCoord[0] - currentCoord[0]) != 2 || abs(nextCoord[1] - currentCoord[1]) != 1))
+		  return false;
+		else
+		return true;
 	}
-	else if (type == QUEEN)
+	else return false;
+}
+
+bool Bishop::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
 	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]) || nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1]))
-				return false;
-			else
-				return true;
-		}
-		else return false;
+		if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1])))
+			return false;
+		else
+			return true;
 	}
-	else
-		return false;
+	else return false;
+}
+
+bool King::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+	{
+		if (!(abs(nextCoord[0] - currentCoord[0]) <= 1 && abs(nextCoord[1] - currentCoord[1]) <= 1))
+			return false;
+		else
+			return true;
+	}
+	else return false;
+}
+
+bool Queen::Move(string nextCoord)
+{
+	if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+	{
+		if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]) || nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1]))
+			return false;
+		else
+			return true;
+	}
+	else return false;
 }
