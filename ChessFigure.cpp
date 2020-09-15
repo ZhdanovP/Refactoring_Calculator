@@ -4,92 +4,64 @@
 
 using namespace std;
 
-ChessFigure::ChessFigure(ChessFigure::FigureType type, std::string coord) : type(type),
-currentCoord(coord)
+ChessFigure::ChessFigure(std::string coord) : currentCoord(coord)
 {
 }
 
+ChessFigure::~ChessFigure() = default;
 
-ChessFigure::~ChessFigure()
+bool ChessFigure::checkCoords(const std::string& nextCoord) const
 {
+  const bool validColomn = nextCoord[0] >= 'A' && nextCoord[0] <= 'H';
+  const bool validRow = nextCoord[1] >= '1' && nextCoord[1] <= '8';
+  const bool moves = nextCoord != currentCoord;
+  return validColomn && validRow && moves;
 }
 
-bool ChessFigure::Move(string nextCoord)
+bool ChessFigure::Move(const string& nextCoord) const
 {
-	if (type == PAWN)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (nextCoord[0] != currentCoord[0] || nextCoord[1] <= currentCoord[1] || (nextCoord[1] - currentCoord[1] != 1 && (currentCoord[1] != '2' || nextCoord[1] != '4')))
-				return false;
-			else
-				return true;
-		}
-		else return false;
-			
-	}
-	
-	else if (type == ROOK)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if ((nextCoord[0] != currentCoord[0]) && (nextCoord[1] != currentCoord[1]) || ((nextCoord[0] == currentCoord[0]) && (nextCoord[1] == currentCoord[1])))
-				return false;
-			else
-				return true;
+  const int dx = nextCoord[0] - currentCoord[0];
+  const int dy = nextCoord[1] - currentCoord[1];
+  return checkCoords(nextCoord) && peiceSpecificMove(dx, dy);
+}
 
-		}
-		else return false;
-	}
-	else if (type == KNIGHT)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			int dx, dy;
-			dx = abs(nextCoord[0] - currentCoord[0]);
-			dy = abs(nextCoord[1] - currentCoord[1]);
-		    if (!(abs(nextCoord[0] - currentCoord[0]) == 1 && abs(nextCoord[1] - currentCoord[1]) == 2 || abs(nextCoord[0] - currentCoord[0]) == 2 && abs(nextCoord[1] - currentCoord[1]) == 1))
-			  return false;
-			else
-			return true;
-		}
-		else return false;
-	}
-	
-	else if (type == BISHOP)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1])))
-				return false;
-			else
-				return true;
-		}
-		else return false;
-	}
-	
-	else if (type == KING)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) <= 1 && abs(nextCoord[1] - currentCoord[1]) <= 1))
-				return false;
-			else
-				return true;
-		}
-		else return false;
-	}
-	else if (type == QUEEN)
-	{
-		if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
-		{
-			if (!(abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]) || nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1]))
-				return false;
-			else
-				return true;
-		}
-		else return false;
-	}
-	else
-		return false;
+bool Pawn::peiceSpecificMove(const int dx, const int dy) const
+{
+  const bool vertical = 0 == dx;
+  const bool firstMove2Forward = currentCoord[1] == '2' && dy == 2;
+  const bool oneForward = dy == 1;
+  return vertical && (oneForward || firstMove2Forward);
+}
+
+bool Rook::peiceSpecificMove(const int dx, const int dy) const
+{
+  const bool vertical = 0 == dx;
+  const bool horizontal = 0 == dy;
+  return vertical || horizontal;
+}
+
+bool Knight::peiceSpecificMove(const int dx, const int dy) const
+{
+  const bool g1 = abs(dx) == 1 && abs(dy) == 2;
+  const bool g2 = abs(dx) == 2 && abs(dy) == 1;
+  return g1 || g2;
+}
+
+bool Bishop::peiceSpecificMove(const int dx, const int dy) const
+{
+  const bool diagonal = abs(dx) == abs(dy);
+  return diagonal;
+}
+
+bool King::peiceSpecificMove(const int dx, const int dy) const
+{
+  return abs(dx) <= 1 && abs(dy) <= 1;
+}
+
+bool Queen::peiceSpecificMove(const int dx, const int dy) const
+{
+  const bool vertical = 0 == dx;
+  const bool horizontal = 0 == dy;
+  const bool diagonal = abs(dx) == abs(dy);
+  return diagonal || vertical || horizontal;
 }
