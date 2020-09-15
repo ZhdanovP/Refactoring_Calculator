@@ -10,7 +10,7 @@ ChessFigure::ChessFigure(std::string coord) : currentCoord(coord)
 
 ChessFigure::~ChessFigure() = default;
 
-bool ChessFigure::checkCoords(std::string nextCoord)
+bool ChessFigure::checkCoords(const std::string& nextCoord) const
 {
     const bool validColomn = nextCoord[0] >= 'A' && nextCoord[0] <= 'H';
     const bool validRow = nextCoord[1] >= '1' && nextCoord[1] <= '8';
@@ -19,7 +19,7 @@ bool ChessFigure::checkCoords(std::string nextCoord)
 }
 
 
-bool Pawn::Move(string nextCoord)
+bool Pawn::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
@@ -33,7 +33,7 @@ bool Pawn::Move(string nextCoord)
 	return false;
 }
 
-bool Rook::Move(string nextCoord)
+bool Rook::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
@@ -45,7 +45,7 @@ bool Rook::Move(string nextCoord)
 	return false;
 }
 
-bool Knight::Move(string nextCoord)
+bool Knight::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
@@ -59,7 +59,7 @@ bool Knight::Move(string nextCoord)
 	return false;
 }
 
-bool Bishop::Move(string nextCoord)
+bool Bishop::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
@@ -72,7 +72,7 @@ bool Bishop::Move(string nextCoord)
 	return false;
 }
 
-bool King::Move(string nextCoord)
+bool King::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
@@ -84,7 +84,7 @@ bool King::Move(string nextCoord)
 	return false;
 }
 
-bool Queen::Move(string nextCoord)
+bool Queen::Move(const string& nextCoord) const
 {
 	if (checkCoords(nextCoord))
 	{
