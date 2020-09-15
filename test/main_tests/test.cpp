@@ -1,10 +1,5 @@
 #include "ChessFigure.hpp"
-#include "test.h"
-
-TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
-}
+#include "gtest/gtest.h"
 
 TEST(LAB2, RookShouldBeCorrectMove)
 {
