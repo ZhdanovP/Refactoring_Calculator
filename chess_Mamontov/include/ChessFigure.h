@@ -1,6 +1,7 @@
 #ifndef CHESS_FIGURE_HPP
 #define CHESS_FIGURE_HPP
 
+#include <cmath>
 
 class Position
 {
@@ -27,6 +28,14 @@ public:
             m_Vertical >= bottomVerticalEdge &&  
             m_Vertical <= topVerticalEdge);
    }    
+
+    char getVerticalDistance(const Position & nextCoord){
+    	return  abs(m_Vertical - nextCoord.m_Vertical);
+    }
+    char getHorisontalDistance(const Position & nextCoord){
+        return  abs(m_Horisontal - nextCoord.m_Horisontal);  
+    }
+
 };
 
 
