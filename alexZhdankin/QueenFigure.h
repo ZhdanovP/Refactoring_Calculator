@@ -4,6 +4,7 @@
 
 class QueenFigure : public ChessFigure
 {
-    QueenFigure(std::string coord);
-    bool Move(std::string nextCoord) override;
+    public:
+        QueenFigure(std::string coord);
+        bool Move(std::string nextCoord) override;
 };

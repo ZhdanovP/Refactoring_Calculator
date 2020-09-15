@@ -14,12 +14,13 @@ bool PawnFigure::Move(std::string nextCoord)
     }
 
     auto subNumbersResult = nextParsedCoord->second - currParsedCoord->second;
+    auto subLettersResult = nextParsedCoord->first - currParsedCoord->first;
 
     auto defaultTurn = (subNumbersResult == 1) && (nextParsedCoord->first == currParsedCoord->first);
-    auto firstTurn = (currParsedCoord->second == 1) && (subNumbersResult == 2);
-    auto eatFigure = (subNumbersResult== 1) && (abs(nextParsedCoord->first - currParsedCoord->first) == 1);
+    auto firstTurn = (currParsedCoord->second == '2') && (nextParsedCoord->second == '4');
+    auto eatFigure = (subNumbersResult== 1) && (abs(subLettersResult) == 1);
 
-    if (defaultTurn && firstTurn && eatFigure)
+    if (defaultTurn || firstTurn || eatFigure)
     {
         return true;
     }
