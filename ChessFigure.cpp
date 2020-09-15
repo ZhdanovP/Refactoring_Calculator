@@ -34,7 +34,10 @@ bool Rook::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		if (((nextCoord[0] == currentCoord[0]) || (nextCoord[1] == currentCoord[1])) && ((nextCoord[0] != currentCoord[0]) || (nextCoord[1] != currentCoord[1])))
+		const bool vertical = nextCoord[0] == currentCoord[0];
+        const bool horizontal = nextCoord[1] == currentCoord[1];
+        const bool stay = vertical && vertical;
+		if ((vertical || horizontal) && !stay)
 			return true;
 	}
 	return false;
