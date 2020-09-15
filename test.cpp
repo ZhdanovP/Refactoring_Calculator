@@ -90,3 +90,40 @@ TEST(LAB2, QueenShouldBeIncorrectMove)
 	std::unique_ptr<ChessFigure> figure{new Queen("D1")};
 	EXPECT_FALSE(figure->Move("E3"));
 }
+
+TEST(LAB2, PawnCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new Pawn("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
+TEST(LAB2, RookCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new Rook("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
+TEST(LAB2, BishopCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new Bishop("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
+TEST(LAB2, KnightCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new Knight("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
+TEST(LAB2, QueenCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new Queen("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
+TEST(LAB2, KingCantStay)
+{
+	std::unique_ptr<ChessFigure> figure{new King("D3")};
+	EXPECT_FALSE(figure->Move("D3"));
+}
+
