@@ -7,7 +7,7 @@ class ChessFigure
 	
 public:
 	ChessFigure(std::string coord);
-	virtual bool Move(std::string nextCoord);
+	virtual bool Move(std::string nextCoord) = 0;
 	virtual ~ChessFigure();
 protected:
 	std::string currentCoord;

@@ -8,15 +8,7 @@ ChessFigure::ChessFigure(std::string coord) : currentCoord(coord)
 {
 }
 
-
-ChessFigure::~ChessFigure()
-{
-}
-
-bool ChessFigure::Move(string nextCoord)
-{
-  return false;
-}
+ChessFigure::~ChessFigure() = default;
 
 bool Pawn::Move(string nextCoord)
 {
