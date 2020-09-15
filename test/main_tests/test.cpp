@@ -59,6 +59,22 @@ TEST(LAB2, PawnShouldBeIncorrectMove) {
   ChessFigure* figure = new Pawn("E2");
   EXPECT_FALSE(figure->Move("C5"));
 }
+
+TEST(LAB2, PawnShouldBeIncorrectMove2) {
+  ChessFigure* figure = new Pawn("E2");
+  EXPECT_FALSE(figure->Move("E5"));
+}
+
+TEST(LAB2, PawnShouldBeIncorrectMove3) {
+  ChessFigure* figure = new Pawn("E2");
+  EXPECT_FALSE(figure->Move("E1"));
+}
+
+TEST(LAB2, PawnShouldBeIncorrectMove4) {
+  ChessFigure* figure = new Pawn("E3");
+  EXPECT_FALSE(figure->Move("E5"));
+}
+
 TEST(LAB2, KingShouldBeCorrectMove) {
   ChessFigure* figure = new King("E1");
   EXPECT_TRUE(figure->Move("E2"));
@@ -66,6 +82,11 @@ TEST(LAB2, KingShouldBeCorrectMove) {
 TEST(LAB2, KingShouldBeIncorrectMove) {
   ChessFigure* figure = new King("E1");
   EXPECT_FALSE(figure->Move("E8"));
+}
+
+TEST(LAB2, KingShouldBeIncorrectMove2) {
+  ChessFigure* figure = new King("E1");
+  EXPECT_FALSE(figure->Move("H1"));
 }
 
 TEST(LAB2, QueenShouldBeCorrectMoveVertical) {
