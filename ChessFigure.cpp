@@ -61,7 +61,8 @@ bool Bishop::Move(string nextCoord)
 	{
 		const int dx = abs(nextCoord[0] - currentCoord[0]);
 		const int dy = abs(nextCoord[1] - currentCoord[1]);
-		if (dx == dy)
+        const bool stay = nextCoord == currentCoord;
+		if (dx == dy && !stay)
 			return true;
 	}
 	return false;
@@ -73,7 +74,8 @@ bool King::Move(string nextCoord)
 	{
 		const int dx = nextCoord[0] - currentCoord[0];
 		const int dy = nextCoord[1] - currentCoord[1];
-		if (abs(dx) <= 1 && abs(dy) <= 1)
+		const bool stay = nextCoord == currentCoord;
+		if (abs(dx) <= 1 && abs(dy) <= 1 && !stay)
 			return true;
 	}
 	return false;
@@ -86,9 +88,10 @@ bool Queen::Move(string nextCoord)
 		const int dx = nextCoord[0] - currentCoord[0];
 		const int dy = nextCoord[1] - currentCoord[1];
 		const bool vertical = nextCoord[0] == currentCoord[0];
-        const bool horizontal = nextCoord[1] == currentCoord[1];
-        const bool diagonal = abs(dx) == abs(dy);
-		if (diagonal || vertical || horizontal)
+		const bool horizontal = nextCoord[1] == currentCoord[1];
+		const bool diagonal = abs(dx) == abs(dy);
+		const bool stay = nextCoord == currentCoord;
+		if ((diagonal || vertical || horizontal) && !stay)
 			return true;
 	}
 	return false;
