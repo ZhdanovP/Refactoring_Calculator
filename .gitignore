@@ -34,3 +34,4 @@
 .DS_Store
 src/.DS_Store
 test/.DS_Store
+CMakeLists.txt.user
