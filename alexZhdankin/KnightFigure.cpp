@@ -5,16 +5,21 @@ KnightFigure::KnightFigure(std::string coord) : ChessFigure(coord)
 
 bool KnightFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    if (!nextParsedCoord)
     {
-        int dx, dy;
-        dx = abs(nextCoord[0] - currFigureCoord[0]);
-        dy = abs(nextCoord[1] - currFigureCoord[1]);
-        if (!(abs(nextCoord[0] - currFigureCoord[0]) == 1 && abs(nextCoord[1] - currFigureCoord[1]) == 2 || abs(nextCoord[0] - currFigureCoord[0]) == 2 && abs(nextCoord[1] - currFigureCoord[1]) == 1))
-            return false;
-        else
+        return false;
+    }
+    auto absSubLettersResult = abs(nextParsedCoord->first - currParsedCoord->first);
+    auto absSubNumbersResult = abs(nextParsedCoord->second - currParsedCoord->second);
+    if (((absSubLettersResult == 1) && (absSubNumbersResult == 2)) || 
+        ((absSubLettersResult == 2) && (absSubNumbersResult == 1)))
+    {
         return true;
     }
-    else return false;
+    else
+    {
+        return false;
+    }
 }

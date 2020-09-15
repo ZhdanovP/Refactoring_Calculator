@@ -5,13 +5,24 @@ RookFigure::RookFigure(std::string coord) : ChessFigure(coord)
 
 bool RookFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    
+    if (!nextParsedCoord)
     {
-        if ((nextCoord[0] != currFigureCoord[0]) && (nextCoord[1] != currFigureCoord[1]) || ((nextCoord[0] == currFigureCoord[0]) && (nextCoord[1] == currFigureCoord[1])))
-            return false;
-        else
-            return true;
+        return false;
     }
-    else return false;
+
+    auto isLetterChanged = nextParsedCoord->first == currParsedCoord->first;
+    auto isNumberChanged = nextParsedCoord->second == currParsedCoord->second;
+    auto horizTurn = isLetterChanged && !isNumberChanged;
+    auto vertTurn = !isLetterChanged && isNumberChanged;
+    if (horizTurn || vertTurn)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

@@ -5,13 +5,19 @@ KingFigure::KingFigure(std::string coord) : ChessFigure(coord)
 
 bool KingFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    if (!nextParsedCoord)
     {
-        if (!(abs(nextCoord[0] - currFigureCoord[0]) <= 1 && abs(nextCoord[1] - currFigureCoord[1]) <= 1))
-            return false;
-        else
-            return true;
+        return false;
     }
-    else return false;
+    if ((abs(nextParsedCoord->first - currParsedCoord->first) <= 1) && 
+        (abs(nextParsedCoord->second - currParsedCoord->second) <= 1))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

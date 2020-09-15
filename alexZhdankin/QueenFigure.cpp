@@ -5,13 +5,29 @@ QueenFigure::QueenFigure(std::string coord) : ChessFigure(coord)
 
 bool QueenFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    
+    if (!nextParsedCoord)
     {
-        if (!(abs(nextCoord[0] - currFigureCoord[0]) == abs(nextCoord[1] - currFigureCoord[1]) || nextCoord[0] == currFigureCoord[1]))
-            return false;
-        else
-            return true;
+        return false;
     }
-    else return false;
+
+    auto subLettersResult = nextParsedCoord->first - currParsedCoord->first;
+    auto subNumbersResult = nextParsedCoord->second - currParsedCoord->second;
+    auto diagTurn = abs(subLettersResult) == abs(subNumbersResult);
+
+    auto isLettersEqual = nextParsedCoord->first == currParsedCoord->first;
+    auto isNumberEqual = nextParsedCoord->second == currParsedCoord->second;
+    auto directTurn =  nextParsedCoord->first == currParsedCoord->first ||
+        nextParsedCoord->second == currParsedCoord->second;
+
+    if (diagTurn || directTurn) 
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

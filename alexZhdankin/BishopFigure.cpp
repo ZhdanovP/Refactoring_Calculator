@@ -5,13 +5,20 @@ BishopFigure::BishopFigure(std::string coord) : ChessFigure(coord)
 
 bool BishopFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    if (!nextParsedCoord)
     {
-        if (!(abs(nextCoord[0] - currFigureCoord[0]) == abs(nextCoord[1] - currFigureCoord[1])))
-            return false;
-        else
-            return true;
+        return false;
     }
-    else return false;
+    auto absValOfLettersSub = abs(nextParsedCoord->first - currParsedCoord->first);
+    auto absValOfNumbersSub = abs(nextParsedCoord->second - currParsedCoord->second);
+    if (absValOfLettersSub == absValOfNumbersSub)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

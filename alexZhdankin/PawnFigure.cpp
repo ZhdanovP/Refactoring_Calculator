@@ -5,13 +5,27 @@ PawnFigure::PawnFigure(std::string coord) : ChessFigure(coord)
 
 bool PawnFigure::Move(std::string nextCoord)
 {
-    auto currFigureCoord = getCurrentPos();
-    if (nextCoord[0] >= 'A' && nextCoord[0] <= 'H' && nextCoord[1] >= '1' && nextCoord[1] <= '8')
+    auto currParsedCoord = getParsedCoords(getCurrentPos());
+    auto nextParsedCoord = getParsedCoords(nextCoord);
+    
+    if (!nextParsedCoord)
     {
-        if (nextCoord[0] != currFigureCoord[0] || nextCoord[1] <= currFigureCoord[1] || (nextCoord[1] - currFigureCoord[1] != 1 && (currFigureCoord[1] != '2' || nextCoord[1] != '4')))
-            return false;
-        else
-            return true;
+        return false;
     }
-    else return false;
+
+    auto subNumbersResult = nextParsedCoord->second - currParsedCoord->second;
+
+    auto defaultTurn = (subNumbersResult == 1) && (nextParsedCoord->first == currParsedCoord->first);
+    auto firstTurn = (currParsedCoord->second == 1) && (subNumbersResult == 2);
+    auto eatFigure = (subNumbersResult== 1) && (abs(nextParsedCoord->first - currParsedCoord->first) == 1);
+
+    if (defaultTurn && firstTurn && eatFigure)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
 }
