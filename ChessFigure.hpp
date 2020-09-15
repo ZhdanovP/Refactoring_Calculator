@@ -4,12 +4,12 @@
 #include <string>
 class ChessFigure
 {
+  bool checkCoords(const std::string& nextCoord) const;
 public:
   ChessFigure(std::string coord);
   bool Move(const std::string& nextCoord) const;
   virtual ~ChessFigure();
 protected:
-  bool checkCoords(const std::string& nextCoord) const;
   virtual bool peiceSpecificMove(const int dx, const int dy) const = 0;
   std::string currentCoord;
 };
