@@ -47,9 +47,8 @@ bool Knight::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		int dx, dy;
-		dx = abs(nextCoord[0] - currentCoord[0]);
-		dy = abs(nextCoord[1] - currentCoord[1]);
+		const int dx = abs(nextCoord[0] - currentCoord[0]);
+		const int dy = abs(nextCoord[1] - currentCoord[1]);
 		if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1))
 			return true;
 	}
@@ -60,7 +59,9 @@ bool Bishop::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		if (abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]))
+		const int dx = abs(nextCoord[0] - currentCoord[0]);
+		const int dy = abs(nextCoord[1] - currentCoord[1]);
+		if (dx == dy)
 			return true;
 	}
 	return false;
@@ -70,7 +71,9 @@ bool King::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		if (abs(nextCoord[0] - currentCoord[0]) <= 1 && abs(nextCoord[1] - currentCoord[1]) <= 1)
+		const int dx = nextCoord[0] - currentCoord[0];
+		const int dy = nextCoord[1] - currentCoord[1];
+		if (abs(dx) <= 1 && abs(dy) <= 1)
 			return true;
 	}
 	return false;
@@ -80,7 +83,12 @@ bool Queen::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		if (abs(nextCoord[0] - currentCoord[0]) == abs(nextCoord[1] - currentCoord[1]) || nextCoord[0] == currentCoord[0] || nextCoord[1] == currentCoord[1])
+		const int dx = nextCoord[0] - currentCoord[0];
+		const int dy = nextCoord[1] - currentCoord[1];
+		const bool vertical = nextCoord[0] == currentCoord[0];
+        const bool horizontal = nextCoord[1] == currentCoord[1];
+        const bool diagonal = abs(dx) == abs(dy);
+		if (diagonal || vertical || horizontal)
 			return true;
 	}
 	return false;
