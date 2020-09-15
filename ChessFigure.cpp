@@ -20,7 +20,11 @@ bool Pawn::Move(string nextCoord)
 {
 	if (isWithinBoard(nextCoord))
 	{
-		if (nextCoord[0] == currentCoord[0] && nextCoord[1] > currentCoord[1] && (nextCoord[1] - currentCoord[1] == 1 || (currentCoord[1] == '2' && nextCoord[1] == '4')))
+		const bool vertical = nextCoord[0] == currentCoord[0];
+		const bool forward = nextCoord[1] > currentCoord[1];
+		const bool firstMove = currentCoord[1] == '2' && nextCoord[1] == '4';
+		const bool oneForward = nextCoord[1] - currentCoord[1] == 1;
+		if (vertical && forward && (oneForward || firstMove))
 			return true;
 	}
 	return false;
